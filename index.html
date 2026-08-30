@@ -162,11 +162,9 @@
     </div>
 
     <script>
-        // Data parsed directly from your performance record
-        const jeeScores = [146, 131, 157, 140]; // Total out of 300
-        const cetScores = [130, 116, 114, 136, 98, 114, 108, 110]; // Total out of 200
+        const jeeScores = [146, 131, 157, 140];
+        const cetScores = [130, 116, 114, 136, 98, 114, 108, 110];
 
-        // Formula 1: Percentile to Rank
         function calculateRank() {
             const p = parseFloat(document.getElementById('percentileInput').value);
             const n = parseInt(document.getElementById('totalCandidates').value);
@@ -181,7 +179,6 @@
             document.getElementById('rankResult').style.display = "block";
         }
 
-        // Formula 2: Target Rank to Required Percentile
         function calculateRequiredPercentile() {
             const targetRank = parseInt(document.getElementById('targetRankInput').value);
             const n = parseInt(document.getElementById('targetTotalCandidates').value);
@@ -196,7 +193,6 @@
             document.getElementById('targetResult').style.display = "block";
         }
 
-        // Analytics Helper Functions
         function getAverage(arr) {
             return (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(2);
         }
@@ -218,7 +214,6 @@
             document.getElementById('statLow').innerText = Math.min(...data) + maxVal;
         }
 
-        // Load initial stats on load
         updateStats();
     </script>
 </body>
