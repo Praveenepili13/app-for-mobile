@@ -144,7 +144,7 @@
         </header>
 
         <div class="glass-card">
-<h3>Percentile &rarr; Estimated AIR Rank</h3> 
+            <h3>Percentile &rarr; Estimated AIR Rank</h3>
             <div class="grid">
                 <div>
                     <label>Percentile Score (%)</label>
@@ -252,7 +252,7 @@
             });
         }
 
-        // Fixed Percentile to Rank Calculator
+        // Percentile to Rank Calculator
         function calculateRank() {
             const rawP = document.getElementById('percentileInput').value.trim();
             const rawN = document.getElementById('totalCandidates').value.trim();
@@ -282,6 +282,7 @@
             document.getElementById('rankResult').style.display = "flex";
         }
 
+        // Target Rank Calculator
         function calculateTarget() {
             const rankInput = document.getElementById('targetRankInput').value.trim();
             const nInput = document.getElementById('targetTotalCandidates').value.trim();
@@ -305,4 +306,46 @@
             if (reqPct >= 99.5) estMarks = "200+";
             else if (reqPct >= 99) estMarks = "170+";
             else if (reqPct >= 97.5) estMarks = "140+";
-            else if (reqPct >= 95) est
+            else if (reqPct >= 95) estMarks = "110+";
+            else if (reqPct >= 90) estMarks = "80+";
+            else estMarks = "Below 80";
+
+            document.getElementById('reqPctVal').innerText = reqPct + "%";
+            document.getElementById('estMarksVal').innerText = estMarks;
+            document.getElementById('targetResult').style.display = "flex";
+        }
+
+        // College Predictor Function
+        function predictCollege() {
+            const val = document.getElementById('rankBracketSelect').value;
+            const resBox = document.getElementById('collegeResult');
+            const title = document.getElementById('collegeTitle');
+            const desc = document.getElementById('collegeDesc');
+
+            if (!val) {
+                resBox.style.display = "none";
+                return;
+            }
+
+            resBox.style.display = "flex";
+
+            if (val === "top5k") {
+                title.innerText = "Top Tier NITs / IIITs / GFTIs (Core Branches)";
+                desc.innerText = "High chance for CSE / ECE in top NITs like Trichy, Surathkal, Warangal, and top IIITs.";
+            } else if (val === "top15k") {
+                title.innerText = "Top & Mid NITs (Circuital & Core)";
+                desc.innerText = "Good options for ECE / EE / Mech in top NITs, and CSE in mid-tier NITs / IIITs.";
+            } else if (val === "top35k") {
+                title.innerText = "Mid to Lower NITs / Top State Colleges";
+                desc.innerText = "Core branches in mid NITs, CSE / IT in newer IIITs or top state-funded institutes.";
+            } else if (val === "top65k") {
+                title.innerText = "Newer NITs / GFTIs / State Level Counseling";
+                desc.innerText = "Options available in newer NITs (North East / Srinagar / Nagaland) or through Home State quota.";
+            } else {
+                title.innerText = "State Level / Private Universities";
+                desc.innerText = "Focus on state engineering entrance counseling, private universities, or JEE Main direct entry seats.";
+            }
+        }
+    </script>
+</body>
+</html>
