@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JEE & Entrance Rank Analytics Engine</title>
 
-    <!-- PWA Installation Metadata -->
-    <link rel="manifest" href="./manifest.json">
+    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0b0f19">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -144,7 +143,6 @@
             <p>Interactive Analytics, Target Calculators & Cutoff Estimators</p>
         </header>
 
-        <!-- 1. Live Percentile to Rank Predictor -->
         <div class="glass-card">
             <h3>Percentile $\rightarrow$ Estimated AIR Rank</h3>
             <div class="grid">
@@ -171,7 +169,6 @@
             </div>
         </div>
 
-        <!-- 2. Target Rank to Percentile & Marks -->
         <div class="glass-card">
             <h3>Target Rank $\rightarrow$ Required Percentile & Marks</h3>
             <div class="grid">
@@ -198,7 +195,6 @@
             </div>
         </div>
 
-        <!-- 3. Previous Years' Marks vs Percentile vs Rank Reference -->
         <div class="glass-card">
             <h3>JEE Main Previous Trends (Marks vs Percentile vs AIR)</h3>
             <p style="color: var(--text-sub); font-size: 0.85rem;">Reference estimates based on historical exam difficulty parameters.</p>
@@ -223,7 +219,6 @@
             </table>
         </div>
 
-        <!-- 4. Target Branch & College Admission Estimator -->
         <div class="glass-card">
             <h3>College & Branch Eligibility Predictor</h3>
             <label>Select Estimated Rank Bracket</label>
@@ -245,12 +240,12 @@
     </div>
 
     <script>
-        // Register Service Worker for PWA Installation
+        // Unregister any previous broken service workers automatically
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker Registered'))
-                    .catch(err => console.log('Service Worker Registration Failed:', err));
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                }
             });
         }
 
