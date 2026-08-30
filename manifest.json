@@ -1,11 +1,11 @@
 {
-  "name": "Performance App",
-  "short_name": "PerfApp",
+  "name": "JEE Rank Engine",
+  "short_name": "RankEngine",
   "start_url": "/app-for-mobile/index.html",
   "scope": "/app-for-mobile/",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#0f172a",
+  "background_color": "#0b0f19",
+  "theme_color": "#0b0f19",
   "icons": [
     {
       "src": "https://cdn-icons-png.flaticon.com/512/3426/3426653.png",
