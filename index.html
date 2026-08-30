@@ -3,218 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Praveen D Epili - Rank & Percentile Engine</title>
+    <title>Praveen D Epili - Rank Engine Pro</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-            --accent: #38bdf8;
-            --green: #4ade80;
-            --purple: #c084fc;
-            --text: #f8fafc;
-            --sub: #94a3b8;
+            --bg: #0b0f19;
+            --card-bg: rgba(22, 30, 46, 0.7);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --accent-blue: #38bdf8;
+            --accent-green: #34d399;
+            --accent-purple: #a78bfa;
+            --accent-pink: #f472b6;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
         }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: radial-gradient(circle at top right, #1e1b4b, var(--bg) 60%);
+            color: var(--text-main);
             margin: 0;
-            padding: 20px;
+            padding: 16px;
+            min-height: 100vh;
         }
+
         .container { max-width: 900px; margin: 0 auto; }
-        h1 { margin-bottom: 4px; font-size: 1.8rem; }
-        p.sub { color: var(--sub); margin-top: 0; margin-bottom: 24px; }
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
+
+        header {
+            text-align: center;
+            padding: 20px 0 10px 0;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p { color: var(--text-sub); margin-top: 6px; font-size: 0.95rem; }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 16px;
         }
-        label { display: block; color: var(--sub); margin-bottom: 6px; font-size: 0.9rem; }
+
+        label { display: block; color: var(--text-sub); margin-bottom: 6px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
         input, select {
             width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            background: #090d16;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(15, 23, 42, 0.8);
             color: #fff;
             box-sizing: border-box;
             font-size: 1rem;
-            margin-bottom: 12px;
+            outline: none;
+            transition: border-color 0.2s;
         }
+
+        input:focus, select:focus {
+            border-color: var(--accent-blue);
+        }
+
         button {
             width: 100%;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 14px;
+            border-radius: 10px;
             border: none;
-            background: var(--accent);
-            color: #0f172a;
+            background: linear-gradient(135deg, var(--accent-blue), #2563eb);
+            color: #fff;
             font-weight: bold;
             font-size: 1rem;
             cursor: pointer;
-            transition: 0.2s ease;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+            margin-top: 10px;
         }
-        button:hover { opacity: 0.9; }
-        .res-box {
-            background: #090d16;
-            border-left: 4px solid var(--accent);
-            padding: 14px;
-            border-radius: 4px;
-            margin-top: 12px;
+
+        button:active { transform: scale(0.98); }
+
+        .result-badge {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 12px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .res-val { font-size: 1.5rem; font-weight: bold; color: var(--green); }
+
+        .res-val { font-size: 1.6rem; font-weight: 800; color: var(--accent-green); }
+
         .stat-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
             gap: 12px;
-            margin-top: 12px;
+            margin-top: 16px;
         }
-        .stat-item {
-            background: #090d16;
-            padding: 12px;
-            border-radius: 8px;
+
+        .stat-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--card-border);
+            padding: 14px;
+            border-radius: 12px;
             text-align: center;
         }
-        .stat-item h4 { margin: 0; color: var(--sub); font-size: 0.85rem; }
-        .stat-item p { margin: 6px 0 0 0; font-size: 1.3rem; font-weight: bold; color: var(--purple); }
+
+        .stat-box h4 { margin: 0; color: var(--text-sub); font-size: 0.8rem; }
+        .stat-box p { margin: 8px 0 0 0; font-size: 1.2rem; font-weight: bold; color: var(--accent-purple); }
+
+        .chart-wrapper { position: relative; height: 260px; width: 100%; margin-top: 10px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Rank & Percentile Calculator</h1>
-        <p class="sub">Student: PRAVEEN D EPILI | JEE Main & MHT-CET Analytics</p>
 
-        <!-- 1. Percentile to Rank Converter -->
-        <div class="card">
-            <h3>1. Percentile to Estimated Rank Converter</h3>
+    <div class="container">
+        <header>
+            <h1>Rank & Performance Analytics</h1>
+            <p>Praveen D Epili | Advanced Calculator & Growth Trajectory</p>
+        </header>
+
+        <!-- 1. Live Percentile to Rank Predictor -->
+        <div class="glass-card">
+            <h3>Percentile $\rightarrow$ AIR Rank Predictor</h3>
             <div class="grid">
                 <div>
-                    <label>Your Percentile (%)</label>
-                    <input type="number" id="percentileInput" step="0.01" placeholder="e.g. 96.05">
+                    <label>Percentile Score (%)</label>
+                    <input type="number" id="percentileInput" step="0.0001" placeholder="e.g. 96.50">
                 </div>
                 <div>
-                    <label>Total Candidates (Appeared)</label>
+                    <label>Total Candidates</label>
                     <input type="number" id="totalCandidates" value="1400000">
                 </div>
             </div>
-            <button onclick="calculateRank()">Calculate Estimated Rank</button>
-            <div class="res-box" id="rankResult" style="display:none;">
-                <label>Estimated All India Rank (AIR):</label>
-                <div class="res-val" id="estimatedRankVal">--</div>
-                <small style="color:var(--sub);">Formula: (100 - Percentile) × (Total Candidates / 100) + 1</small>
+            <button onclick="calculateRank()">Estimate All India Rank</button>
+            
+            <div class="result-badge" id="rankResult" style="display: none;">
+                <div>
+                    <span style="color: var(--text-sub); font-size: 0.9rem;">Estimated AIR</span>
+                    <div class="res-val" id="estimatedRankVal">--</div>
+                </div>
+                <div style="text-align: right;">
+                    <span style="color: var(--text-sub); font-size: 0.9rem;">Top Percentage</span>
+                    <div style="font-size: 1.2rem; font-weight: bold; color: var(--accent-blue);" id="topPercentVal">--</div>
+                </div>
             </div>
         </div>
 
-        <!-- 2. Target Rank to Required Percentile -->
-        <div class="card">
-            <h3>2. Target Rank to Required Percentile</h3>
+        <!-- 2. Target Percentile & Marks Predictor -->
+        <div class="glass-card">
+            <h3>Target AIR $\rightarrow$ Required Percentile & Marks</h3>
             <div class="grid">
                 <div>
-                    <label>Desired Target Rank (AIR)</label>
-                    <input type="number" id="targetRankInput" placeholder="e.g. 15000">
+                    <label>Desired Target AIR</label>
+                    <input type="number" id="targetRankInput" placeholder="e.g. 10000">
                 </div>
                 <div>
                     <label>Total Candidates</label>
                     <input type="number" id="targetTotalCandidates" value="1400000">
                 </div>
             </div>
-            <button style="background: var(--purple);" onclick="calculateRequiredPercentile()">Calculate Needed Percentile</button>
-            <div class="res-box" id="targetResult" style="display:none; border-color: var(--purple);">
-                <label>Required Percentile Needed:</label>
-                <div class="res-val" style="color:var(--accent);" id="requiredPercentileVal">--</div>
+            <button style="background: linear-gradient(135deg, var(--accent-purple), #7c3aed); box-shadow: 0 4px 14px rgba(167, 139, 250, 0.3);" onclick="calculateTarget()">Calculate Target Requirements</button>
+            
+            <div class="result-badge" id="targetResult" style="display: none; border-color: rgba(167, 139, 250, 0.3); background: rgba(167, 139, 250, 0.1);">
+                <div>
+                    <span style="color: var(--text-sub); font-size: 0.9rem;">Required Percentile</span>
+                    <div class="res-val" style="color: var(--accent-pink);" id="reqPctVal">--</div>
+                </div>
+                <div style="text-align: right;">
+                    <span style="color: var(--text-sub); font-size: 0.9rem;">Est. JEE Marks Needed</span>
+                    <div style="font-size: 1.2rem; font-weight: bold; color: var(--accent-blue);" id="estMarksVal">--</div>
+                </div>
             </div>
         </div>
 
-        <!-- 3. Historical Data Statistics -->
-        <div class="card">
-            <h3>3. Historical Performance Analytics</h3>
-            <label>Select Test Data Stream</label>
-            <select id="streamSelect" onchange="updateStats()">
-                <option value="jee">JEE Main Tests (Historical Data)</option>
-                <option value="cet">MHT-CET Tests (Historical Data)</option>
+        <!-- 3. Historical Data & Analytics -->
+        <div class="glass-card">
+            <h3>Historical Score Distribution</h3>
+            <label>Select Examination Stream</label>
+            <select id="streamSelect" onchange="renderAnalytics()">
+                <option value="jee">JEE Main Performance History</option>
+                <option value="cet">MHT-CET Performance History</option>
             </select>
-            
+
             <div class="stat-grid">
-                <div class="stat-item">
-                    <h4>Average Score</h4>
+                <div class="stat-box">
+                    <h4>AVERAGE</h4>
                     <p id="statAvg">--</p>
                 </div>
-                <div class="stat-item">
-                    <h4>Median Score</h4>
+                <div class="stat-box">
+                    <h4>MEDIAN</h4>
                     <p id="statMedian">--</p>
                 </div>
-                <div class="stat-item">
-                    <h4>Highest Score</h4>
+                <div class="stat-box">
+                    <h4>HIGHEST</h4>
                     <p id="statHigh">--</p>
                 </div>
-                <div class="stat-item">
-                    <h4>Lowest Score</h4>
+                <div class="stat-box">
+                    <h4>LOWEST</h4>
                     <p id="statLow">--</p>
                 </div>
+            </div>
+
+            <div class="chart-wrapper">
+                <canvas id="analyticsChart"></canvas>
             </div>
         </div>
     </div>
 
     <script>
-        const jeeScores = [146, 131, 157, 140];
-        const cetScores = [130, 116, 114, 136, 98, 114, 108, 110];
+        const jeeData = [146, 131, 157, 140];
+        const cetData = [130, 116, 114, 136, 98, 114, 108, 110];
+        let chartInstance = null;
 
         function calculateRank() {
             const p = parseFloat(document.getElementById('percentileInput').value);
             const n = parseInt(document.getElementById('totalCandidates').value);
 
-            if (isNaN(p) || isNaN(n) || p < 0 || p > 100) {
-                alert("Please enter a valid percentile between 0 and 100.");
-                return;
-            }
+            if (isNaN(p) || isNaN(n) || p < 0 || p > 100) return;
 
             const rank = Math.floor((100 - p) * (n / 100)) + 1;
-            document.getElementById('estimatedRankVal').innerText = "AIR ~ " + rank.toLocaleString();
-            document.getElementById('rankResult').style.display = "block";
+            const topPct = (100 - p).toFixed(2);
+
+            document.getElementById('estimatedRankVal').innerText = "~ " + rank.toLocaleString();
+            document.getElementById('topPercentVal').innerText = "Top " + topPct + "%";
+            document.getElementById('rankResult').style.display = "flex";
         }
 
-        function calculateRequiredPercentile() {
-            const targetRank = parseInt(document.getElementById('targetRankInput').value);
+        function calculateTarget() {
+            const rank = parseInt(document.getElementById('targetRankInput').value);
             const n = parseInt(document.getElementById('targetTotalCandidates').value);
 
-            if (isNaN(targetRank) || isNaN(n) || targetRank <= 0) {
-                alert("Please enter a valid target rank.");
-                return;
-            }
+            if (isNaN(rank) || isNaN(n) || rank <= 0) return;
 
-            const reqPercentile = 100 - ((targetRank - 1) * 100 / n);
-            document.getElementById('requiredPercentileVal').innerText = reqPercentile.toFixed(4) + " %";
-            document.getElementById('targetResult').style.display = "block";
+            const reqPct = (100 - ((rank - 1) * 100 / n)).toFixed(4);
+            
+            // Marks Estimation Model for JEE
+            let estMarks = 100;
+            if (reqPct >= 99) estMarks = 190;
+            else if (reqPct >= 97) estMarks = 160;
+            else if (reqPct >= 95) estMarks = 135;
+            else if (reqPct >= 90) estMarks = 110;
+            else estMarks = 85;
+
+            document.getElementById('reqPctVal').innerText = reqPct + "%";
+            document.getElementById('estMarksVal').innerText = "~ " + estMarks + " / 300";
+            document.getElementById('targetResult').style.display = "flex";
         }
 
-        function getAverage(arr) {
-            return (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(2);
-        }
-
-        function getMedian(arr) {
-            const sorted = [...arr].sort((a, b) => a - b);
-            const mid = Math.floor(sorted.length / 2);
-            return sorted.length % 2 !== 0 ? sorted[mid] : ((sorted[mid - 1] + sorted[mid]) / 2).toFixed(1);
-        }
-
-        function updateStats() {
+        function renderAnalytics() {
             const type = document.getElementById('streamSelect').value;
-            const data = (type === 'jee') ? jeeScores : cetScores;
-            const maxVal = (type === 'jee') ? '/300' : '/200';
+            const data = (type === 'jee') ? jeeData : cetData;
+            const maxScore = (type === 'jee') ? 300 : 200;
 
-            document.getElementById('statAvg').innerText = getAverage(data) + maxVal;
-            document.getElementById('statMedian').innerText = getMedian(data) + maxVal;
-            document.getElementById('statHigh').innerText = Math.max(...data) + maxVal;
-            document.getElementById('statLow').innerText = Math.min(...data) + maxVal;
+            const avg = (data.reduce((a, b) => a + b, 0) / data.length).toFixed(1);
+            const sorted = [...data].sort((a, b) => a - b);
+            const mid = Math.floor(sorted.length / 2);
+            const median = sorted.length % 2 !== 0 ? sorted[mid] : ((sorted[mid - 1] + sorted[mid]) / 2);
+
+            document.getElementById('statAvg').innerText = `${avg}/${maxScore}`;
+            document.getElementById('statMedian').innerText = `${median}/${maxScore}`;
+            document.getElementById('statHigh').innerText = `${Math.max(...data)}/${maxScore}`;
+            document.getElementById('statLow').innerText = `${Math.min(...data)}/${maxScore}`;
+
+            const ctx = document.getElementById('analyticsChart').getContext('2d');
+            
+            if (chartInstance) chartInstance.destroy();
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map((_, i) => `Test ${i + 1}`),
+                    datasets: [{
+                        label: 'Score',
+                        data: data,
+                        backgroundColor: 'rgba(56, 189, 248, 0.4)',
+                        borderColor: '#38bdf8',
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { max: maxScore, grid: { color: 'rgba(255, 255, 255, 0.05)' } },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
         }
 
-        updateStats();
+        renderAnalytics();
     </script>
 </body>
 </html>
