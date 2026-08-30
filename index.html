@@ -3,24 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Mobile App</title>
-    
-    <!-- Link to PWA Manifest -->
-    <link rel="manifest" href="/app-for-mobile/manifest.json">
-    
-    <!-- Theme color for mobile browser status bar -->
-    <meta name="theme-color" content="#0f172a">
+    <title>Praveen D Epili - Rank & Percentile Engine</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #38bdf8;
+            --green: #4ade80;
+            --purple: #c084fc;
+            --text: #f8fafc;
+            --sub: #94a3b8;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { margin-bottom: 4px; font-size: 1.8rem; }
+        p.sub { color: var(--sub); margin-top: 0; margin-bottom: 24px; }
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+        label { display: block; color: var(--sub); margin-bottom: 6px; font-size: 0.9rem; }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background: #090d16;
+            color: #fff;
+            box-sizing: border-box;
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: var(--accent);
+            color: #0f172a;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+        button:hover { opacity: 0.9; }
+        .res-box {
+            background: #090d16;
+            border-left: 4px solid var(--accent);
+            padding: 14px;
+            border-radius: 4px;
+            margin-top: 12px;
+        }
+        .res-val { font-size: 1.5rem; font-weight: bold; color: var(--green); }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .stat-item {
+            background: #090d16;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-item h4 { margin: 0; color: var(--sub); font-size: 0.85rem; }
+        .stat-item p { margin: 6px 0 0 0; font-size: 1.3rem; font-weight: bold; color: var(--purple); }
+    </style>
 </head>
 <body>
-    <h1>My Custom Dashboard App</h1>
-    <p>This code runs as a mobile app!</p>
+    <div class="container">
+        <h1>Rank & Percentile Calculator</h1>
+        <p class="sub">Student: PRAVEEN D EPILI | JEE Main & MHT-CET Analytics</p>
 
-    <!-- Register the Service Worker for offline support -->
+        <!-- 1. Percentile to Rank Converter -->
+        <div class="card">
+            <h3>1. Percentile to Estimated Rank Converter</h3>
+            <div class="grid">
+                <div>
+                    <label>Your Percentile (%)</label>
+                    <input type="number" id="percentileInput" step="0.01" placeholder="e.g. 96.05">
+                </div>
+                <div>
+                    <label>Total Candidates (Appeared)</label>
+                    <input type="number" id="totalCandidates" value="1400000">
+                </div>
+            </div>
+            <button onclick="calculateRank()">Calculate Estimated Rank</button>
+            <div class="res-box" id="rankResult" style="display:none;">
+                <label>Estimated All India Rank (AIR):</label>
+                <div class="res-val" id="estimatedRankVal">--</div>
+                <small style="color:var(--sub);">Formula: (100 - Percentile) × (Total Candidates / 100) + 1</small>
+            </div>
+        </div>
+
+        <!-- 2. Target Rank to Required Percentile -->
+        <div class="card">
+            <h3>2. Target Rank to Required Percentile</h3>
+            <div class="grid">
+                <div>
+                    <label>Desired Target Rank (AIR)</label>
+                    <input type="number" id="targetRankInput" placeholder="e.g. 15000">
+                </div>
+                <div>
+                    <label>Total Candidates</label>
+                    <input type="number" id="targetTotalCandidates" value="1400000">
+                </div>
+            </div>
+            <button style="background: var(--purple);" onclick="calculateRequiredPercentile()">Calculate Needed Percentile</button>
+            <div class="res-box" id="targetResult" style="display:none; border-color: var(--purple);">
+                <label>Required Percentile Needed:</label>
+                <div class="res-val" style="color:var(--accent);" id="requiredPercentileVal">--</div>
+            </div>
+        </div>
+
+        <!-- 3. Historical Data Statistics -->
+        <div class="card">
+            <h3>3. Historical Performance Analytics</h3>
+            <label>Select Test Data Stream</label>
+            <select id="streamSelect" onchange="updateStats()">
+                <option value="jee">JEE Main Tests (Historical Data)</option>
+                <option value="cet">MHT-CET Tests (Historical Data)</option>
+            </select>
+            
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <h4>Average Score</h4>
+                    <p id="statAvg">--</p>
+                </div>
+                <div class="stat-item">
+                    <h4>Median Score</h4>
+                    <p id="statMedian">--</p>
+                </div>
+                <div class="stat-item">
+                    <h4>Highest Score</h4>
+                    <p id="statHigh">--</p>
+                </div>
+                <div class="stat-item">
+                    <h4>Lowest Score</h4>
+                    <p id="statLow">--</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-                .then(() => console.log('Service Worker Registered'));
+        // Data parsed directly from your performance record
+        const jeeScores = [146, 131, 157, 140]; // Total out of 300
+        const cetScores = [130, 116, 114, 136, 98, 114, 108, 110]; // Total out of 200
+
+        // Formula 1: Percentile to Rank
+        function calculateRank() {
+            const p = parseFloat(document.getElementById('percentileInput').value);
+            const n = parseInt(document.getElementById('totalCandidates').value);
+
+            if (isNaN(p) || isNaN(n) || p < 0 || p > 100) {
+                alert("Please enter a valid percentile between 0 and 100.");
+                return;
+            }
+
+            const rank = Math.floor((100 - p) * (n / 100)) + 1;
+            document.getElementById('estimatedRankVal').innerText = "AIR ~ " + rank.toLocaleString();
+            document.getElementById('rankResult').style.display = "block";
         }
+
+        // Formula 2: Target Rank to Required Percentile
+        function calculateRequiredPercentile() {
+            const targetRank = parseInt(document.getElementById('targetRankInput').value);
+            const n = parseInt(document.getElementById('targetTotalCandidates').value);
+
+            if (isNaN(targetRank) || isNaN(n) || targetRank <= 0) {
+                alert("Please enter a valid target rank.");
+                return;
+            }
+
+            const reqPercentile = 100 - ((targetRank - 1) * 100 / n);
+            document.getElementById('requiredPercentileVal').innerText = reqPercentile.toFixed(4) + " %";
+            document.getElementById('targetResult').style.display = "block";
+        }
+
+        // Analytics Helper Functions
+        function getAverage(arr) {
+            return (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(2);
+        }
+
+        function getMedian(arr) {
+            const sorted = [...arr].sort((a, b) => a - b);
+            const mid = Math.floor(sorted.length / 2);
+            return sorted.length % 2 !== 0 ? sorted[mid] : ((sorted[mid - 1] + sorted[mid]) / 2).toFixed(1);
+        }
+
+        function updateStats() {
+            const type = document.getElementById('streamSelect').value;
+            const data = (type === 'jee') ? jeeScores : cetScores;
+            const maxVal = (type === 'jee') ? '/300' : '/200';
+
+            document.getElementById('statAvg').innerText = getAverage(data) + maxVal;
+            document.getElementById('statMedian').innerText = getMedian(data) + maxVal;
+            document.getElementById('statHigh').innerText = Math.max(...data) + maxVal;
+            document.getElementById('statLow').innerText = Math.min(...data) + maxVal;
+        }
+
+        // Load initial stats on load
+        updateStats();
     </script>
 </body>
 </html>
