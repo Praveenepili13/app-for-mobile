@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Praveen D Epili - Rank Engine Pro</title>
+    <title>JEE & Entrance Rank Analytics Engine</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --bg: #0b0f19;
-            --card-bg: rgba(22, 30, 46, 0.7);
+            --card-bg: rgba(22, 30, 46, 0.75);
             --card-border: rgba(255, 255, 255, 0.08);
             --accent-blue: #38bdf8;
             --accent-green: #34d399;
@@ -37,7 +37,7 @@
 
         header h1 {
             margin: 0;
-            font-size: 2rem;
+            font-size: 2.2rem;
             background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -110,38 +110,34 @@
 
         .res-val { font-size: 1.6rem; font-weight: 800; color: var(--accent-green); }
 
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 12px;
-            margin-top: 16px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            color: var(--text-main);
         }
 
-        .stat-box {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--card-border);
-            padding: 14px;
-            border-radius: 12px;
-            text-align: center;
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.9rem;
         }
 
-        .stat-box h4 { margin: 0; color: var(--text-sub); font-size: 0.8rem; }
-        .stat-box p { margin: 8px 0 0 0; font-size: 1.2rem; font-weight: bold; color: var(--accent-purple); }
-
-        .chart-wrapper { position: relative; height: 260px; width: 100%; margin-top: 10px; }
+        th { color: var(--accent-blue); text-transform: uppercase; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <header>
-            <h1>Rank & Performance Analytics</h1>
-            <p>Praveen D Epili | Advanced Calculator & Growth Trajectory</p>
+            <h1>Rank & Percentile Predictor</h1>
+            <p>Interactive Analytics, Target Calculators & Cutoff Estimators</p>
         </header>
 
         <!-- 1. Live Percentile to Rank Predictor -->
         <div class="glass-card">
-            <h3>Percentile $\rightarrow$ AIR Rank Predictor</h3>
+            <h3>Percentile $\rightarrow$ Estimated AIR Rank</h3>
             <div class="grid">
                 <div>
                     <label>Percentile Score (%)</label>
@@ -166,13 +162,13 @@
             </div>
         </div>
 
-        <!-- 2. Target Percentile & Marks Predictor -->
+        <!-- 2. Target Rank to Percentile & Marks -->
         <div class="glass-card">
-            <h3>Target AIR $\rightarrow$ Required Percentile & Marks</h3>
+            <h3>Target Rank $\rightarrow$ Required Percentile & Marks</h3>
             <div class="grid">
                 <div>
                     <label>Desired Target AIR</label>
-                    <input type="number" id="targetRankInput" placeholder="e.g. 10000">
+                    <input type="number" id="targetRankInput" placeholder="e.g. 15000">
                 </div>
                 <div>
                     <label>Total Candidates</label>
@@ -193,50 +189,61 @@
             </div>
         </div>
 
-        <!-- 3. Historical Data & Analytics -->
+        <!-- 3. Previous Years' Marks vs Percentile vs Rank Reference -->
         <div class="glass-card">
-            <h3>Historical Score Distribution</h3>
-            <label>Select Examination Stream</label>
-            <select id="streamSelect" onchange="renderAnalytics()">
-                <option value="jee">JEE Main Performance History</option>
-                <option value="cet">MHT-CET Performance History</option>
+            <h3>JEE Main Previous Trends (Marks vs Percentile vs AIR)</h3>
+            <p style="color: var(--text-sub); font-size: 0.85rem;">Reference estimates based on historical exam difficulty parameters.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Marks Range (/300)</th>
+                        <th>Percentile Range</th>
+                        <th>Expected AIR Bracket</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>280 – 300</td><td>99.99+</td><td>1 – 150</td></tr>
+                    <tr><td>250 – 279</td><td>99.90 - 99.98</td><td>151 – 1,200</td></tr>
+                    <tr><td>200 – 249</td><td>99.50 - 99.89</td><td>1,201 – 6,500</td></tr>
+                    <tr><td>170 – 199</td><td>99.00 - 99.49</td><td>6,501 – 13,000</td></tr>
+                    <tr><td>140 – 169</td><td>97.50 - 98.99</td><td>13,001 – 32,000</td></tr>
+                    <tr><td>110 – 139</td><td>95.00 - 97.49</td><td>32,001 – 65,000</td></tr>
+                    <tr><td>80 – 109</td><td>90.00 - 94.99</td><td>65,001 – 135,000</td></tr>
+                    <tr><td>50 – 79</td><td>80.00 - 89.99</td><td>135,001 – 270,000</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 4. Target Branch & College Admission Estimator -->
+        <div class="glass-card">
+            <h3>College & Branch Eligibility Predictor</h3>
+            <label>Select Estimated Rank Bracket</label>
+            <select id="rankBracketSelect" onchange="predictCollege()">
+                <option value="">-- Choose Rank Range --</option>
+                <option value="top5k">Top 1 – 5,000</option>
+                <option value="top15k">5,001 – 15,000</option>
+                <option value="top35k">15,001 – 35,000</option>
+                <option value="top65k">35,001 – 65,000</option>
+                <option value="above65k">Above 65,000</option>
             </select>
-
-            <div class="stat-grid">
-                <div class="stat-box">
-                    <h4>AVERAGE</h4>
-                    <p id="statAvg">--</p>
-                </div>
-                <div class="stat-box">
-                    <h4>MEDIAN</h4>
-                    <p id="statMedian">--</p>
-                </div>
-                <div class="stat-box">
-                    <h4>HIGHEST</h4>
-                    <p id="statHigh">--</p>
-                </div>
-                <div class="stat-box">
-                    <h4>LOWEST</h4>
-                    <p id="statLow">--</p>
-                </div>
-            </div>
-
-            <div class="chart-wrapper">
-                <canvas id="analyticsChart"></canvas>
+            
+            <div class="result-badge" id="collegeResult" style="display: none; flex-direction: column; align-items: flex-start; gap: 8px;">
+                <div style="font-weight: bold; color: var(--accent-blue);" id="collegeTitle">--</div>
+                <div style="color: var(--text-sub); font-size: 0.9rem;" id="collegeDesc">--</div>
             </div>
         </div>
+
     </div>
 
     <script>
-        const jeeData = [146, 131, 157, 140];
-        const cetData = [130, 116, 114, 136, 98, 114, 108, 110];
-        let chartInstance = null;
-
         function calculateRank() {
             const p = parseFloat(document.getElementById('percentileInput').value);
             const n = parseInt(document.getElementById('totalCandidates').value);
 
-            if (isNaN(p) || isNaN(n) || p < 0 || p > 100) return;
+            if (isNaN(p) || isNaN(n) || p < 0 || p > 100) {
+                alert("Please enter a valid percentile between 0 and 100.");
+                return;
+            }
 
             const rank = Math.floor((100 - p) * (n / 100)) + 1;
             const topPct = (100 - p).toFixed(2);
@@ -250,68 +257,55 @@
             const rank = parseInt(document.getElementById('targetRankInput').value);
             const n = parseInt(document.getElementById('targetTotalCandidates').value);
 
-            if (isNaN(rank) || isNaN(n) || rank <= 0) return;
+            if (isNaN(rank) || isNaN(n) || rank <= 0) {
+                alert("Please enter a valid target rank.");
+                return;
+            }
 
             const reqPct = (100 - ((rank - 1) * 100 / n)).toFixed(4);
             
-            // Marks Estimation Model for JEE
-            let estMarks = 100;
-            if (reqPct >= 99) estMarks = 190;
-            else if (reqPct >= 97) estMarks = 160;
-            else if (reqPct >= 95) estMarks = 135;
-            else if (reqPct >= 90) estMarks = 110;
-            else estMarks = 85;
+            let estMarks = "80+";
+            if (reqPct >= 99.5) estMarks = "200+";
+            else if (reqPct >= 99) estMarks = "170+";
+            else if (reqPct >= 97.5) estMarks = "140+";
+            else if (reqPct >= 95) estMarks = "110+";
+            else if (reqPct >= 90) estMarks = "85+";
 
             document.getElementById('reqPctVal').innerText = reqPct + "%";
             document.getElementById('estMarksVal').innerText = "~ " + estMarks + " / 300";
             document.getElementById('targetResult').style.display = "flex";
         }
 
-        function renderAnalytics() {
-            const type = document.getElementById('streamSelect').value;
-            const data = (type === 'jee') ? jeeData : cetData;
-            const maxScore = (type === 'jee') ? 300 : 200;
+        function predictCollege() {
+            const val = document.getElementById('rankBracketSelect').value;
+            const resBox = document.getElementById('collegeResult');
+            const title = document.getElementById('collegeTitle');
+            const desc = document.getElementById('collegeDesc');
 
-            const avg = (data.reduce((a, b) => a + b, 0) / data.length).toFixed(1);
-            const sorted = [...data].sort((a, b) => a - b);
-            const mid = Math.floor(sorted.length / 2);
-            const median = sorted.length % 2 !== 0 ? sorted[mid] : ((sorted[mid - 1] + sorted[mid]) / 2);
+            if (!val) {
+                resBox.style.display = "none";
+                return;
+            }
 
-            document.getElementById('statAvg').innerText = `${avg}/${maxScore}`;
-            document.getElementById('statMedian').innerText = `${median}/${maxScore}`;
-            document.getElementById('statHigh').innerText = `${Math.max(...data)}/${maxScore}`;
-            document.getElementById('statLow').innerText = `${Math.min(...data)}/${maxScore}`;
+            resBox.style.display = "flex";
 
-            const ctx = document.getElementById('analyticsChart').getContext('2d');
-            
-            if (chartInstance) chartInstance.destroy();
-
-            chartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: data.map((_, i) => `Test ${i + 1}`),
-                    datasets: [{
-                        label: 'Score',
-                        data: data,
-                        backgroundColor: 'rgba(56, 189, 248, 0.4)',
-                        borderColor: '#38bdf8',
-                        borderWidth: 2,
-                        borderRadius: 8
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: { max: maxScore, grid: { color: 'rgba(255, 255, 255, 0.05)' } },
-                        x: { grid: { display: false } }
-                    },
-                    plugins: { legend: { display: false } }
-                }
-            });
+            if (val === 'top5k') {
+                title.innerText = "Top Tier NITs / IIITs (CSE & ECE)";
+                desc.innerText = "High chance of securing Computer Science or Electronics engineering in top institutes like NIT Trichy, Surathkal, Warangal, and IIIT Hyderabad/Allahabad.";
+            } else if (val === 'top15k') {
+                title.innerText = "Top/Mid NITs & Core Branches";
+                desc.innerText = "Likely admission into CSE/ECE at mid-tier NITs or Mechanical/Electrical at premier NITs.";
+            } else if (val === 'top35k') {
+                title.innerText = "Newer NITs, IIITs & State Top Colleges";
+                desc.innerText = "Good chances for core engineering branches across established state government engineering colleges and newer IIITs/GFTIs.";
+            } else if (val === 'top65k') {
+                title.innerText = "GFTIs & State Level Institutions";
+                desc.innerText = "Eligibility for Government Funded Technical Institutes (GFTIs) and state engineering seats.";
+            } else {
+                title.innerText = "State Level Colleges & Private Universities";
+                desc.innerText = "Focus on state-level entrance exams (like MHT-CET) or private university counseling pathways.";
+            }
         }
-
-        renderAnalytics();
     </script>
 </body>
 </html>
