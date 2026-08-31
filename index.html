@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +24,6 @@
             --accent-green: #34d399;
             --accent-pink: #f472b6;
             --accent-orange: #fb923c;
-            --accent-yellow: #facc15;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --input-bg: rgba(13, 19, 34, 0.85);
@@ -139,23 +139,6 @@
             flex-shrink: 0;
         }
 
-        /* Mobile Overlay */
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(6px);
-            z-index: 999;
-        }
-
-        .sidebar-overlay.active {
-            display: block;
-        }
-
         /* Controls Bar */
         .controls-bar {
             position: fixed;
@@ -193,7 +176,7 @@
             color: var(--primary-accent);
         }
 
-        /* Main Content Area */
+        /* Main Layout */
         .main-content {
             margin-left: 270px;
             flex: 1;
@@ -234,7 +217,6 @@
             display: block;
         }
 
-        /* Responsive Grid Framework */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
@@ -249,11 +231,6 @@
             padding: 24px;
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
             width: 100%;
-            transition: border-color 0.3s ease;
-        }
-
-        .card:hover {
-            border-color: rgba(255, 255, 255, 0.12);
         }
 
         .col-12 { grid-column: span 12; }
@@ -261,7 +238,6 @@
         .col-6 { grid-column: span 6; }
         .col-4 { grid-column: span 4; }
 
-        /* Form Components */
         .card-header {
             display: flex;
             align-items: center;
@@ -327,21 +303,14 @@
             font-weight: 700;
             font-size: 0.95rem;
             cursor: pointer;
-            transition: transform 0.15 ease, box-shadow 0.2s ease;
+            transition: transform 0.15s ease, box-shadow 0.2s ease;
             box-shadow: 0 6px 20px rgba(56, 189, 248, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
 
         .btn-submit:hover {
             box-shadow: 0 8px 25px rgba(56, 189, 248, 0.4);
         }
 
-        .btn-submit:active { transform: scale(0.99); }
-
-        /* Metrics Display Cards */
         .metrics-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -389,7 +358,6 @@
         .accent-blue { color: var(--primary-accent); }
         .accent-purple { color: #a855f7; }
 
-        /* Table Components & Filters */
         .table-filter-bar {
             display: flex;
             gap: 12px;
@@ -410,7 +378,6 @@
             overflow-y: auto;
             border-radius: 14px;
             border: 1px solid var(--border-card);
-            -webkit-overflow-scrolling: touch;
         }
 
         table {
@@ -438,7 +405,6 @@
             font-weight: 700;
             text-transform: uppercase;
             font-size: 0.75rem;
-            letter-spacing: 0.5px;
         }
 
         tr:hover td {
@@ -452,14 +418,12 @@
             font-weight: 700;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
         }
 
         .tag-easy { background: rgba(52, 211, 153, 0.12); color: var(--accent-green); border: 1px solid rgba(52, 211, 153, 0.2); }
         .tag-mod { background: rgba(251, 146, 60, 0.12); color: var(--accent-orange); border: 1px solid rgba(251, 146, 60, 0.2); }
         .tag-tough { background: rgba(244, 114, 182, 0.12); color: var(--accent-pink); border: 1px solid rgba(244, 114, 182, 0.2); }
 
-        /* Feature Card Highlight */
         .info-box {
             background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%);
             border: 1px solid rgba(56, 189, 248, 0.15);
@@ -467,50 +431,23 @@
             padding: 20px;
         }
 
-        /* Mobile Adjustments */
         @media (max-width: 900px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.active-mobile {
-                transform: translateX(0);
-            }
-            .main-content {
-                margin-left: 0 !important;
-                padding: 68px 16px 24px 16px;
-            }
-            .controls-bar {
-                left: 16px !important;
-            }
-            .col-8, .col-6, .col-4 {
-                grid-column: span 12;
-            }
-            .table-filter-bar input, .table-filter-bar select {
-                max-width: 100%;
-            }
-            .header-title h2 {
-                font-size: 1.4rem;
-            }
-            .metric-value {
-                font-size: 1.2rem;
-            }
+            .sidebar { transform: translateX(-100%); }
+            .main-content { margin-left: 0 !important; padding: 68px 16px 24px 16px; }
+            .controls-bar { left: 16px !important; }
+            .col-8, .col-6, .col-4 { grid-column: span 12; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Overlay background for Mobile Menu -->
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebarMobile()"></div>
-
-    <!-- Floating Toggle Controls -->
     <div class="controls-bar expanded" id="controlsBar">
         <button class="toggle-btn" onclick="toggleSidebar()">
             <svg style="width:18px;height:18px;fill:currentColor" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
-            <span id="toggleText">Menu</span>
+            <span>Menu</span>
         </button>
     </div>
 
-    <!-- Navigation Sidebar -->
     <aside class="sidebar hidden" id="sidebar">
         <div class="brand">
             <div class="brand-logo">R</div>
@@ -519,40 +456,31 @@
 
         <ul class="nav-list">
             <li class="nav-item active" onclick="switchTab('scorePredictorTab', this)">
-                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
                 <span>Score & College Predictor</span>
             </li>
             <li class="nav-item" onclick="switchTab('pctToRankTab', this)">
-                <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8v-10h-8v10zm0-18v6h8V3h-8z"/></svg>
                 <span>Percentile ➔ Rank</span>
             </li>
             <li class="nav-item" onclick="switchTab('rankToPctTab', this)">
-                <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
                 <span>Rank ➔ Percentile</span>
-            </li>
-            <li class="nav-item" onclick="switchTab('prioritiesTab', this)">
-                <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l2.02 4.54 4.92.42-3.73 3.23L16.23 18z"/></svg>
-                <span>Yearly Priorities Trend</span>
             </li>
         </ul>
     </aside>
 
-    <!-- Main Content Container -->
     <main class="main-content expanded" id="mainContent">
 
-        <!-- SECTION 1: Score & College Predictor -->
         <section id="scorePredictorTab" class="dashboard-section active">
             <header class="header">
                 <div class="header-title">
                     <h2>Marks & Complete College Analytics Engine</h2>
-                    <p>Calculate estimated Rank, Percentile, & Category Cutoffs across premier institutions</p>
+                    <p>Calculate AIR, Category Rank, & gender-adjusted admission chances</p>
                 </div>
             </header>
 
             <div class="dashboard-grid">
                 <div class="card col-8">
                     <div class="card-header">
-                        <div class="card-title"><span>⚡</span> Score & Reservation Profile</div>
+                        <div class="card-title"><span>⚡</span> Profile & Score Inputs</div>
                     </div>
                     <div class="form-grid">
                         <div class="form-group">
@@ -560,26 +488,24 @@
                             <input type="number" id="sec1RawScore" placeholder="e.g. 175" min="0" max="300">
                         </div>
                         <div class="form-group">
-                            <label>Category (Category Cutoffs)</label>
+                            <label>Category Rank Type</label>
                             <select id="sec1Category">
-                                <option value="GEN">General (UR)</option>
+                                <option value="GEN">General (AIR)</option>
                                 <option value="EWS">GEN-EWS</option>
                                 <option value="OBC">OBC-NCL</option>
-                                <option value="SC">SC</option>
-                                <option value="ST">ST</option>
+                                <option value="SC">SC Category</option>
+                                <option value="ST">ST Category</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label>Gender Quota</label>
                             <select id="sec1Gender">
                                 <option value="neutral">Gender-Neutral</option>
-                                <option value="female">Female Supernumerary</option>
+                                <option value="female">Female Supernumerary (+20% Relax)</option>
                             </select>
                         </div>
                     </div>
-                    <button class="btn-submit" onclick="runScorePredictor()">
-                        <span>Calculate Rank & Refresh Database</span>
-                    </button>
+                    <button class="btn-submit" onclick="runScorePredictor()">Calculate Rank & Refresh Database</button>
 
                     <div class="metrics-row" id="sec1Results" style="display: none;">
                         <div class="metric-card accent-green-border">
@@ -599,10 +525,269 @@
 
                 <div class="card col-4">
                     <div class="card-header">
-                        <div class="card-title"><span>🏛️</span> Institutional Database</div>
+                        <div class="card-title"><span>🏛️</span> Engine Status</div>
                     </div>
                     <div class="info-box">
                         <p style="color: var(--text-main); font-size: 0.875rem; line-height: 1.6; font-weight: 600;">
-                            Category & Gender Sensitive Cutoffs
+                            Category & Gender Sensitive
                         </p>
-                        <p style="color
+                        <p style="color: var(--text-muted); font-size: 0.825rem; line-height: 1.6; margin-top: 8px;">
+                            Category choice adjusts your estimated Category Rank while preserving institutional cutoffs. Female Supernumerary relaxes cutoffs by an additional 20%.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card col-12">
+                    <div class="card-header">
+                        <div class="card-title"><span>🎯</span> Institutional Allocation Matrix</div>
+                        <div class="table-filter-bar">
+                            <input type="text" id="filterCollege" placeholder="Search Institute/Branch..." onkeyup="filterTable()">
+                            <select id="filterChance" onchange="filterTable()">
+                                <option value="ALL">All Admission Chances</option>
+                                <option value="High">High Chance</option>
+                                <option value="Moderate">Moderate Chance</option>
+                                <option value="Low">Low Chance</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Institute Name</th>
+                                    <th>Engineering Discipline</th>
+                                    <th>Cutoff Rank</th>
+                                    <th>Admission Probability</th>
+                                    <th>Your Evaluated Rank</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sec1CollegeTable">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; color: var(--text-muted);">
+                                        Enter your score above to calculate results.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pctToRankTab" class="dashboard-section">
+            <header class="header">
+                <div class="header-title">
+                    <h2>Percentile ➔ Rank Converter</h2>
+                </div>
+            </header>
+            <div class="dashboard-grid">
+                <div class="card col-6">
+                    <div class="form-group" style="margin-bottom: 18px;">
+                        <label>Percentile Score (%)</label>
+                        <input type="number" id="pctInput" step="any" placeholder="e.g. 98.723">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 24px;">
+                        <label>Total Candidates</label>
+                        <input type="number" id="pctCandidatesInput" value="1400000">
+                    </div>
+                    <button class="btn-submit" onclick="convertPctToRank()">Calculate Rank</button>
+                </div>
+                <div class="card col-6">
+                    <div class="metrics-row" style="grid-template-columns: 1fr;">
+                        <div class="metric-card accent-green-border">
+                            <div class="metric-label">Calculated All India Rank</div>
+                            <div class="metric-value accent-green" id="resRankFromPct">--</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rankToPctTab" class="dashboard-section">
+            <header class="header">
+                <div class="header-title">
+                    <h2>Rank ➔ Percentile Converter</h2>
+                </div>
+            </header>
+            <div class="dashboard-grid">
+                <div class="card col-6">
+                    <div class="form-group" style="margin-bottom: 18px;">
+                        <label>Target Rank</label>
+                        <input type="number" id="rankInput" placeholder="e.g. 12000">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 24px;">
+                        <label>Total Candidates</label>
+                        <input type="number" id="rankCandidatesInput" value="1400000">
+                    </div>
+                    <button class="btn-submit" onclick="convertRankToPct()" style="background: var(--secondary-gradient);">Calculate Percentile</button>
+                </div>
+                <div class="card col-6">
+                    <div class="metrics-row" style="grid-template-columns: 1fr;">
+                        <div class="metric-card accent-purple-border">
+                            <div class="metric-label">Required Percentile</div>
+                            <div class="metric-value accent-purple" id="resPctFromRank">--</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('hidden');
+            document.getElementById('mainContent').classList.toggle('expanded');
+            document.getElementById('controlsBar').classList.toggle('expanded');
+        }
+
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.dashboard-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+        }
+
+        // Expanded College Database with specific category cutoff ranks
+        const collegeDatabase = [
+            { inst: "NIT Trichy", branch: "Computer Science & Engineering", cutoffs: { GEN: 1200, EWS: 250, OBC: 450, SC: 220, ST: 110 } },
+            { inst: "NIT Trichy", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 3200, EWS: 600, OBC: 1100, SC: 550, ST: 280 } },
+            { inst: "NIT Trichy", branch: "Electrical & Electronics Engg", cutoffs: { GEN: 6500, EWS: 1200, OBC: 2100, SC: 1100, ST: 600 } },
+            { inst: "NIT Surathkal", branch: "Computer Science & Engineering", cutoffs: { GEN: 1800, EWS: 350, OBC: 650, SC: 310, ST: 160 } },
+            { inst: "NIT Surathkal", branch: "Artificial Intelligence", cutoffs: { GEN: 2700, EWS: 500, OBC: 900, SC: 450, ST: 230 } },
+            { inst: "NIT Surathkal", branch: "Information Technology", cutoffs: { GEN: 3400, EWS: 620, OBC: 1200, SC: 600, ST: 310 } },
+            { inst: "NIT Warangal", branch: "Computer Science & Engineering", cutoffs: { GEN: 2200, EWS: 420, OBC: 780, SC: 380, ST: 190 } },
+            { inst: "NIT Warangal", branch: "Mathematics & Computing", cutoffs: { GEN: 4000, EWS: 750, OBC: 1400, SC: 700, ST: 370 } },
+            { inst: "IIIT Allahabad", branch: "Information Technology", cutoffs: { GEN: 5500, EWS: 950, OBC: 1900, SC: 980, ST: 520 } },
+            { inst: "MNNIT Allahabad", branch: "Computer Science & Engineering", cutoffs: { GEN: 4500, EWS: 820, OBC: 1600, SC: 800, ST: 410 } },
+            { inst: "VNIT Nagpur", branch: "Computer Science & Engineering", cutoffs: { GEN: 7000, EWS: 1300, OBC: 2400, SC: 1250, ST: 680 } },
+            { inst: "MNIT Jaipur", branch: "Computer Science & Engineering", cutoffs: { GEN: 4800, EWS: 880, OBC: 1700, SC: 850, ST: 440 } },
+            { inst: "IIIT Lucknow", branch: "CS and Artificial Intelligence", cutoffs: { GEN: 9800, EWS: 1800, OBC: 3400, SC: 1800, ST: 950 } },
+            { inst: "BIT Mesra", branch: "Computer Science & Engineering", cutoffs: { GEN: 16000, EWS: 2800, OBC: 5200, SC: 2900, ST: 1500 } },
+            { inst: "PEC Chandigarh", branch: "Aerospace Engineering", cutoffs: { GEN: 27000, EWS: 4600, OBC: 8800, SC: 4800, ST: 2600 } }
+        ];
+
+        let currentCalculatedResults = [];
+
+        function runScorePredictor() {
+            const rawScore = parseFloat(document.getElementById('sec1RawScore').value);
+            const category = document.getElementById('sec1Category').value;
+            const gender = document.getElementById('sec1Gender').value;
+
+            if (isNaN(rawScore) || rawScore < 0 || rawScore > 300) {
+                alert('Please enter a valid raw score between 0 and 300.');
+                return;
+            }
+
+            // Estimate Percentile
+            let pct = 0;
+            if (rawScore >= 250) pct = 99.9 + ((rawScore - 250) / 50) * 0.099;
+            else if (rawScore >= 180) pct = 99.0 + ((rawScore - 180) / 70) * 0.9;
+            else if (rawScore >= 150) pct = 97.5 + ((rawScore - 150) / 30) * 1.5;
+            else if (rawScore >= 120) pct = 94.0 + ((rawScore - 120) / 30) * 3.5;
+            else if (rawScore >= 80) pct = 85.0 + ((rawScore - 80) / 40) * 9.0;
+            else pct = Math.max(10, (rawScore / 80) * 85);
+
+            const totalN = 1400000;
+            let air = Math.max(1, Math.floor((100 - pct) * (totalN / 100)));
+
+            // Compute Specific Category Rank
+            let categoryRank = air;
+            if (category === 'OBC') categoryRank = Math.max(1, Math.floor(air * 0.27));
+            else if (category === 'EWS') categoryRank = Math.max(1, Math.floor(air * 0.10));
+            else if (category === 'SC') categoryRank = Math.max(1, Math.floor(air * 0.15));
+            else if (category === 'ST') categoryRank = Math.max(1, Math.floor(air * 0.075));
+
+            document.getElementById('sec1PercentileVal').innerText = pct.toFixed(4) + '%';
+            document.getElementById('sec1AirVal').innerText = '~' + air.toLocaleString();
+            document.getElementById('sec1CatRankVal').innerText = category === 'GEN' ? 'N/A (AIR Used)' : '~' + categoryRank.toLocaleString();
+            document.getElementById('sec1Results').style.display = 'grid';
+
+            processCollegeAllocations(categoryRank, category, gender);
+        }
+
+        function processCollegeAllocations(userRank, category, gender) {
+            let genderMultiplier = gender === 'female' ? 1.20 : 1.0;
+
+            currentCalculatedResults = collegeDatabase.map(opt => {
+                let baseCutoff = opt.cutoffs[category] || opt.cutoffs.GEN;
+                let effectiveCutoff = Math.floor(baseCutoff * genderMultiplier);
+                
+                let chance = "Low";
+                let tagClass = "tag-tough";
+
+                if (userRank <= effectiveCutoff) {
+                    chance = "High";
+                    tagClass = "tag-easy";
+                } else if (userRank <= effectiveCutoff * 1.25) {
+                    chance = "Moderate";
+                    tagClass = "tag-mod";
+                }
+
+                return { 
+                    inst: opt.inst,
+                    branch: opt.branch,
+                    effectiveCutoff,
+                    userRank,
+                    chance, 
+                    tagClass 
+                };
+            });
+
+            renderCollegeTable(currentCalculatedResults);
+        }
+
+        function renderCollegeTable(data) {
+            const tbody = document.getElementById('sec1CollegeTable');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No matching institutions found.</td></tr>`;
+                return;
+            }
+
+            data.forEach(opt => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight: 700;">${opt.inst}</td>
+                    <td style="color: var(--primary-accent);">${opt.branch}</td>
+                    <td style="color: var(--text-muted); font-weight: 600;">~${opt.effectiveCutoff.toLocaleString()}</td>
+                    <td><span class="tag ${opt.tagClass}">${opt.chance}</span></td>
+                    <td style="color: var(--text-muted);">~${opt.userRank.toLocaleString()}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterTable() {
+            const collegeQuery = document.getElementById('filterCollege').value.toLowerCase();
+            const chanceQuery = document.getElementById('filterChance').value;
+
+            const filtered = currentCalculatedResults.filter(item => {
+                const matchesCollege = item.inst.toLowerCase().includes(collegeQuery) || item.branch.toLowerCase().includes(collegeQuery);
+                const matchesChance = chanceQuery === 'ALL' || item.chance === chanceQuery;
+                return matchesCollege && matchesChance;
+            });
+
+            renderCollegeTable(filtered);
+        }
+
+        function convertPctToRank() {
+            const p = parseFloat(document.getElementById('pctInput').value);
+            const n = parseInt(document.getElementById('pctCandidatesInput').value, 10);
+            if (isNaN(p) || isNaN(n)) return alert("Please fill valid numbers.");
+            let rank = Math.max(1, Math.floor((100 - p) * (n / 100)));
+            document.getElementById('resRankFromPct').innerText = '~ ' + rank.toLocaleString();
+        }
+
+        function convertRankToPct() {
+            const rank = parseInt(document.getElementById('rankInput').value, 10);
+            const n = parseInt(document.getElementById('rankCandidatesInput').value, 10);
+            if (isNaN(rank) || isNaN(n)) return alert("Please fill valid numbers.");
+            const reqPct = Math.min(99.9999, (100 - ((rank - 1) * 100 / n))).toFixed(4);
+            document.getElementById('resPctFromRank').innerText = reqPct + '%';
+        }
+    </script>
+</body>
+</html>
