@@ -40,6 +40,7 @@
             min-height: 100vh;
             display: flex;
             overflow-x: hidden;
+            position: relative;
         }
 
         /* Sidebar Navigation */
@@ -53,8 +54,10 @@
             gap: 24px;
             position: fixed;
             height: 100vh;
-            z-index: 100;
+            z-index: 1000;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            top: 0;
+            left: 0;
         }
 
         .sidebar.hidden {
@@ -79,6 +82,7 @@
             font-weight: 800;
             color: #fff;
             box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+            flex-shrink: 0;
         }
 
         .brand-title {
@@ -118,25 +122,43 @@
             width: 20px;
             height: 20px;
             fill: currentColor;
+            flex-shrink: 0;
         }
 
-        /* Top Controls Bar & Toggle Buttons */
+        /* Mobile Overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* Fixed Mobile/Desktop Top Controls Bar */
         .controls-bar {
             position: fixed;
-            top: 16px;
-            left: 276px;
-            z-index: 90;
+            top: 12px;
+            left: 272px;
+            z-index: 900;
             transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             gap: 10px;
         }
 
         .controls-bar.expanded {
-            left: 20px;
+            left: 16px;
         }
 
         .toggle-btn {
-            background: var(--bg-card);
+            background: rgba(15, 23, 42, 0.9);
             border: 1px solid var(--border-card);
             color: var(--text-main);
             padding: 10px 14px;
@@ -148,7 +170,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
             transition: all 0.2s ease;
         }
 
@@ -157,12 +179,13 @@
             color: var(--primary-accent);
         }
 
-        /* Main Content Workspace */
+        /* Main Content Area */
         .main-content {
             margin-left: 260px;
             flex: 1;
-            padding: 70px 32px 32px 32px;
+            padding: 72px 24px 32px 24px;
             max-width: 1600px;
+            width: 100%;
             transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -178,14 +201,14 @@
         }
 
         .header-title h2 {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 800;
             letter-spacing: -0.5px;
         }
 
         .header-title p {
             color: var(--text-muted);
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             margin-top: 4px;
         }
 
@@ -197,7 +220,7 @@
             display: block;
         }
 
-        /* Grid Framework */
+        /* Responsive Grid Framework */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
@@ -209,8 +232,9 @@
             backdrop-filter: blur(16px);
             border: 1px solid var(--border-card);
             border-radius: 16px;
-            padding: 24px;
+            padding: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
         }
 
         .col-12 { grid-column: span 12; }
@@ -218,24 +242,18 @@
         .col-6 { grid-column: span 6; }
         .col-4 { grid-column: span 4; }
 
-        @media (max-width: 1100px) {
-            .col-8, .col-6, .col-4 { grid-column: span 12; }
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.show-mobile { transform: translateX(0); }
-            .main-content { margin-left: 0; padding-top: 70px; }
-            .controls-bar { left: 20px; }
-        }
-
         /* Form Components */
         .card-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
         .card-title {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -244,7 +262,7 @@
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 16px;
             margin-bottom: 20px;
         }
@@ -295,10 +313,10 @@
 
         .btn-submit:active { transform: scale(0.99); }
 
-        /* Output Components */
+        /* Metrics Display Cards */
         .metrics-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 16px;
             margin-top: 20px;
         }
@@ -317,7 +335,7 @@
         }
 
         .metric-value {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 800;
             color: #fff;
             margin-top: 6px;
@@ -327,15 +345,16 @@
         .accent-blue { color: var(--primary-accent); }
         .accent-purple { color: #a78bfa; }
 
-        /* Filter Controls & Tables */
+        /* Table Components & Filters */
         .table-filter-bar {
             display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
+            gap: 10px;
             flex-wrap: wrap;
+            width: 100%;
         }
 
         .table-filter-bar input, .table-filter-bar select {
+            width: 100%;
             max-width: 200px;
             padding: 8px 12px;
             font-size: 0.8rem;
@@ -343,16 +362,18 @@
 
         .table-container {
             overflow-x: auto;
-            max-height: 520px;
+            max-height: 500px;
             overflow-y: auto;
             border-radius: 10px;
             border: 1px solid var(--border-card);
+            -webkit-overflow-scrolling: touch;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
+            min-width: 600px; /* Ensures minimum readable width on mobile with horizontal scroll */
         }
 
         thead {
@@ -390,20 +411,52 @@
         .tag-easy { background: rgba(52, 211, 153, 0.15); color: var(--accent-green); }
         .tag-mod { background: rgba(251, 146, 60, 0.15); color: var(--accent-orange); }
         .tag-tough { background: rgba(244, 114, 182, 0.15); color: var(--accent-pink); }
+
+        /* Mobile Adjustments */
+        @media (max-width: 900px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.active-mobile {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0 !important;
+                padding: 68px 14px 24px 14px;
+            }
+            .controls-bar {
+                left: 14px !important;
+            }
+            .col-8, .col-6, .col-4 {
+                grid-column: span 12;
+            }
+            .table-filter-bar input, .table-filter-bar select {
+                max-width: 100%;
+            }
+            .header-title h2 {
+                font-size: 1.3rem;
+            }
+            .metric-value {
+                font-size: 1.15rem;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Toggle Controls -->
-    <div class="controls-bar" id="controlsBar">
+    <!-- Overlay background for Mobile Menu -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebarMobile()"></div>
+
+    <!-- Floating Toggle Controls -->
+    <div class="controls-bar expanded" id="controlsBar">
         <button class="toggle-btn" onclick="toggleSidebar()">
-            <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
-            <span id="toggleText">Hide Navigation</span>
+            <svg style="width:18px;height:18px;fill:currentColor" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+            <span id="toggleText">Menu</span>
         </button>
     </div>
 
     <!-- Navigation Sidebar -->
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar hidden" id="sidebar">
         <div class="brand">
             <div class="brand-logo">R</div>
             <div class="brand-title">Rank Engine</div>
@@ -429,15 +482,15 @@
         </ul>
     </aside>
 
-    <!-- Content Workspace -->
-    <main class="main-content" id="mainContent">
+    <!-- Main Content Container -->
+    <main class="main-content expanded" id="mainContent">
 
-        <!-- SECTION 1: Score & Extended College Predictor -->
+        <!-- SECTION 1: Score & College Predictor -->
         <section id="scorePredictorTab" class="dashboard-section active">
             <header class="header">
                 <div class="header-title">
                     <h2>Marks & Complete College Analytics Engine</h2>
-                    <p>Calculate your estimated Rank, Percentile, and Comprehensive Branch Allocation across All NITs, IIITs, & GFTIs</p>
+                    <p>Calculate estimated Rank, Percentile, & Branch Allocations across All NITs, IIITs, & GFTIs</p>
                 </div>
             </header>
 
@@ -469,7 +522,7 @@
                             </select>
                         </div>
                     </div>
-                    <button class="btn-submit" onclick="runScorePredictor()">Calculate Rank & Search College Databases</button>
+                    <button class="btn-submit" onclick="runScorePredictor()">Calculate Rank & Search Databases</button>
 
                     <div class="metrics-row" id="sec1Results" style="display: none;">
                         <div class="metric-card">
@@ -492,10 +545,10 @@
                         <div class="card-title"><span>💡</span> Dynamic All-India Database</div>
                     </div>
                     <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6;">
-                        This expanded predictor indexes official seat allotment statistics across Tier-1, Tier-2, and Tier-3 premier institutes (NITs, IIITs, GFTIs).
+                        Indexes official seat allotment statistics across Tier-1, Tier-2, and Tier-3 premier institutions (NITs, IIITs, GFTIs).
                     </p>
                     <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin-top: 10px;">
-                        It analyzes multiple engineering branches per institution based on calculated ranks and category cutoffs.
+                        Analyzes multiple engineering disciplines per college based on computed rank trends.
                     </p>
                 </div>
 
@@ -503,7 +556,7 @@
                     <div class="card-header">
                         <div class="card-title"><span>🏛️</span> Institutional Branch-Wise Allocation Matrix</div>
                         <div class="table-filter-bar">
-                            <input type="text" id="filterCollege" placeholder="Filter by Institute..." onkeyup="filterTable()">
+                            <input type="text" id="filterCollege" placeholder="Search Institute/Branch..." onkeyup="filterTable()">
                             <select id="filterChance" onchange="filterTable()">
                                 <option value="ALL">All Admission Chances</option>
                                 <option value="High">High Chance</option>
@@ -527,7 +580,7 @@
                             <tbody id="sec1CollegeTable">
                                 <tr>
                                     <td colspan="5" style="text-align: center; color: var(--text-muted);">
-                                        Enter your score above to pull records across all top institutions and branches.
+                                        Enter your score above to calculate admission possibilities.
                                     </td>
                                 </tr>
                             </tbody>
@@ -549,7 +602,7 @@
             <div class="dashboard-grid">
                 <div class="card col-6">
                     <div class="card-header">
-                        <div class="card-title"><span>📊</span> Percentile Parameters</div>
+                        <div class="card-title"><span>📊</span> Percentile Inputs</div>
                     </div>
                     <div class="form-group" style="margin-bottom: 16px;">
                         <label>Percentile Score (%)</label>
@@ -564,7 +617,7 @@
 
                 <div class="card col-6">
                     <div class="card-header">
-                        <div class="card-title"><span>📌</span> Estimated Rank Result</div>
+                        <div class="card-title"><span>📌</span> Calculated Output</div>
                     </div>
                     <div class="metrics-row" style="grid-template-columns: 1fr;">
                         <div class="metric-card">
@@ -572,7 +625,7 @@
                             <div class="metric-value accent-green" id="resRankFromPct">--</div>
                         </div>
                         <div class="metric-card">
-                            <div class="metric-label">Top Candidate Percentage</div>
+                            <div class="metric-label">Top Candidate Bracket</div>
                             <div class="metric-value accent-blue" id="resTopPctVal">--</div>
                         </div>
                     </div>
@@ -602,7 +655,7 @@
                         <label>Total Candidates (X)</label>
                         <input type="number" id="rankCandidatesInput" value="1400000" placeholder="e.g. 1400000">
                     </div>
-                    <button class="btn-submit" onclick="convertRankToPct()" style="background: var(--secondary-gradient);">Calculate Required Percentile</button>
+                    <button class="btn-submit" onclick="convertRankToPct()" style="background: var(--secondary-gradient);">Calculate Percentile Needed</button>
                 </div>
 
                 <div class="card col-6">
@@ -623,7 +676,7 @@
             </div>
         </section>
 
-        <!-- SECTION 4: Yearly Priorities Trend (Marks vs Percentile) -->
+        <!-- SECTION 4: Yearly Priorities Trend -->
         <section id="prioritiesTab" class="dashboard-section">
             <header class="header">
                 <div class="header-title">
@@ -699,109 +752,78 @@
     </main>
 
     <script>
-        // Sidebar Toggle Logic
+        // Sidebar Toggle Logic for Desktop & Mobile
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.getElementById('mainContent');
             const controlsBar = document.getElementById('controlsBar');
-            const toggleText = document.getElementById('toggleText');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isMobile = window.innerWidth <= 900;
 
-            sidebar.classList.toggle('hidden');
-            mainContent.classList.toggle('expanded');
-            controlsBar.classList.toggle('expanded');
-
-            if (sidebar.classList.contains('hidden')) {
-                toggleText.innerText = "Show Navigation";
+            if (isMobile) {
+                sidebar.classList.toggle('active-mobile');
+                overlay.classList.toggle('active');
             } else {
-                toggleText.innerText = "Hide Navigation";
+                sidebar.classList.toggle('hidden');
+                mainContent.classList.toggle('expanded');
+                controlsBar.classList.toggle('expanded');
             }
         }
 
-        // Navigation Switcher
+        function closeSidebarMobile() {
+            document.getElementById('sidebar').classList.remove('active-mobile');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+        }
+
+        // Section Switcher
         function switchTab(tabId, element) {
             document.querySelectorAll('.dashboard-section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             
             document.getElementById(tabId).classList.add('active');
             element.classList.add('active');
+
+            if (window.innerWidth <= 900) {
+                closeSidebarMobile();
+            }
         }
 
-        // Comprehensive College Database (Multi-branch for each top institution)
+        // Database
         const extendedCollegeDatabase = [
-            // NIT Trichy
             { inst: "NIT Trichy", branch: "Computer Science & Engineering", minRank: 1200, type: "AI Quota" },
             { inst: "NIT Trichy", branch: "Electronics & Comm. Engg (ECE)", minRank: 3200, type: "AI Quota" },
             { inst: "NIT Trichy", branch: "Electrical & Electronics (EEE)", minRank: 6500, type: "AI Quota" },
             { inst: "NIT Trichy", branch: "Mechanical Engineering", minRank: 10500, type: "AI Quota" },
             { inst: "NIT Trichy", branch: "Civil Engineering", minRank: 19500, type: "AI Quota" },
-
-            // NIT Surathkal
             { inst: "NIT Surathkal", branch: "Computer Science & Engineering", minRank: 1800, type: "AI Quota" },
             { inst: "NIT Surathkal", branch: "Information Technology", minRank: 3400, type: "AI Quota" },
             { inst: "NIT Surathkal", branch: "Artificial Intelligence (AI)", minRank: 2700, type: "AI Quota" },
             { inst: "NIT Surathkal", branch: "Electronics & Comm. Engg", minRank: 5100, type: "AI Quota" },
             { inst: "NIT Surathkal", branch: "Chemical Engineering", minRank: 16000, type: "AI Quota" },
-
-            // NIT Warangal
             { inst: "NIT Warangal", branch: "Computer Science & Engineering", minRank: 2200, type: "AI Quota" },
             { inst: "NIT Warangal", branch: "Mathematics & Computing", minRank: 4000, type: "AI Quota" },
             { inst: "NIT Warangal", branch: "Electronics & Comm. Engg", minRank: 6200, type: "AI Quota" },
             { inst: "NIT Warangal", branch: "Electrical & Electronics", minRank: 9800, type: "AI Quota" },
             { inst: "NIT Warangal", branch: "Metallurgical & Materials", minRank: 26000, type: "AI Quota" },
-
-            // IIIT Hyderabad / Allahabad
             { inst: "IIIT Allahabad", branch: "Information Technology (IT)", minRank: 5500, type: "AI Quota" },
             { inst: "IIIT Allahabad", branch: "ECE (Electronics & Comm)", minRank: 9200, type: "AI Quota" },
-            { inst: "IIIT Allahabad", branch: "IT in Business Informatics", minRank: 6100, type: "AI Quota" },
-
-            // MNNIT Allahabad
             { inst: "MNNIT Allahabad", branch: "Computer Science & Engineering", minRank: 4500, type: "AI Quota" },
             { inst: "MNNIT Allahabad", branch: "Information Technology", minRank: 6800, type: "AI Quota" },
             { inst: "MNNIT Allahabad", branch: "Electrical Engineering", minRank: 14500, type: "AI Quota" },
-            { inst: "MNNIT Allahabad", branch: "Mechanical Engineering", minRank: 21000, type: "AI Quota" },
-
-            // NIT Calicut
             { inst: "NIT Calicut", branch: "Computer Science & Engineering", minRank: 5200, type: "AI Quota" },
             { inst: "NIT Calicut", branch: "Electronics & Comm. Engg", minRank: 9500, type: "AI Quota" },
-            { inst: "NIT Calicut", branch: "Electrical & Electronics", minRank: 16500, type: "AI Quota" },
-            { inst: "NIT Calicut", branch: "Mechanical Engineering", minRank: 24000, type: "AI Quota" },
-            { inst: "NIT Calicut", branch: "Civil Engineering", minRank: 36000, type: "AI Quota" },
-
-            // VNIT Nagpur
             { inst: "VNIT Nagpur", branch: "Computer Science & Engineering", minRank: 7000, type: "AI Quota" },
             { inst: "VNIT Nagpur", branch: "Electronics & Comm. Engg", minRank: 12500, type: "AI Quota" },
-            { inst: "VNIT Nagpur", branch: "Mechanical Engineering", minRank: 27000, type: "AI Quota" },
-            { inst: "VNIT Nagpur", branch: "Civil Engineering", minRank: 39000, type: "AI Quota" },
-
-            // MNIT Jaipur
             { inst: "MNIT Jaipur", branch: "Computer Science & Engineering", minRank: 4800, type: "AI Quota" },
-            { inst: "MNIT Jaipur", branch: "Electronics & Comm. Engg", minRank: 9800, type: "AI Quota" },
-            { inst: "MNIT Jaipur", branch: "Electrical Engineering", minRank: 17500, type: "AI Quota" },
-            { inst: "MNIT Jaipur", branch: "Chemical Engineering", minRank: 32000, type: "AI Quota" },
-
-            // IIIT Delhi / Lucknow / Jabalpur
             { inst: "IIIT Lucknow", branch: "Computer Science & Engineering", minRank: 10500, type: "AI Quota" },
-            { inst: "IIIT Lucknow", branch: "Computer Science & Business", minRank: 12800, type: "AI Quota" },
             { inst: "IIIT Jabalpur", branch: "Computer Science & Engineering", minRank: 14500, type: "AI Quota" },
-            { inst: "IIIT Jabalpur", branch: "Electronics & Comm. Engg", minRank: 23000, type: "AI Quota" },
-            { inst: "IIIT Kancheepuram", branch: "Computer Science & Engineering", minRank: 16500, type: "AI Quota" },
-
-            // Tier 2 NITs & GFTIs
             { inst: "NIT Rourkela", branch: "Computer Science & Engineering", minRank: 3800, type: "AI Quota" },
-            { inst: "NIT Rourkela", branch: "Biotechnology & Biomedical", minRank: 42000, type: "AI Quota" },
             { inst: "NIT Durgapur", branch: "Computer Science & Engineering", minRank: 8900, type: "AI Quota" },
-            { inst: "NIT Durgapur", branch: "Electrical Engineering", minRank: 22000, type: "AI Quota" },
-            { inst: "NIT Silchar", branch: "Computer Science & Engineering", minRank: 11500, type: "AI Quota" },
-            { inst: "NIT Silchar", branch: "Electronics & Comm. Engg", minRank: 18500, type: "AI Quota" },
-            { inst: "PEC Chandigarh", branch: "Computer Science & Engineering", minRank: 11000, type: "AI Quota" },
-            { inst: "PEC Chandigarh", branch: "Aerospace Engineering", minRank: 31000, type: "AI Quota" },
-            { inst: "BIT Mesra", branch: "Computer Science & Engineering", minRank: 16000, type: "AI Quota" },
-            { inst: "BIT Mesra", branch: "Artificial Intelligence & ML", minRank: 18500, type: "AI Quota" }
+            { inst: "BIT Mesra", branch: "Computer Science & Engineering", minRank: 16000, type: "AI Quota" }
         ];
 
         let currentCalculatedResults = [];
 
-        // Section 1: Score Predictor Logic
         function runScorePredictor() {
             const rawScore = parseFloat(document.getElementById('sec1RawScore').value);
             const category = document.getElementById('sec1Category').value;
@@ -894,7 +916,6 @@
             renderCollegeTable(filtered);
         }
 
-        // Section 2: Percentile to Rank
         function convertPctToRank() {
             const p = parseFloat(document.getElementById('pctInput').value);
             const n = parseInt(document.getElementById('pctCandidatesInput').value, 10);
@@ -913,7 +934,6 @@
             document.getElementById('resTopPctVal').innerText = 'Top ' + Math.max(0, topPct) + '%';
         }
 
-        // Section 3: Rank to Percentile
         function convertRankToPct() {
             const rank = parseInt(document.getElementById('rankInput').value, 10);
             const n = parseInt(document.getElementById('rankCandidatesInput').value, 10);
