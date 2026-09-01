@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rank Engine - Exhaustive JEE Main College Predictor</title>
+    <title>JEE Main Rank Engine & College Predictor</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,6 +23,7 @@
             --accent-orange: #f97316;
             --accent-purple: #a855f7;
             --accent-gold: #fbbf24;
+            --accent-red: #ef4444;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --input-bg: rgba(15, 23, 42, 0.95);
@@ -89,7 +90,7 @@
         }
 
         .brand-title {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 800;
             background: linear-gradient(90deg, #ffffff, #cbd5e1);
             -webkit-background-clip: text;
@@ -136,7 +137,7 @@
             flex-shrink: 0;
         }
 
-        /* Responsive Controls */
+        /* Responsive Mobile Controls */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -242,14 +243,10 @@
             transition: border-color 0.3s ease, transform 0.2s ease;
         }
 
-        .card:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-        }
+        .card:hover { border-color: rgba(255, 255, 255, 0.15); }
 
         .col-12 { grid-column: span 12; }
-        .col-8 { grid-column: span 8; }
         .col-6 { grid-column: span 6; }
-        .col-4 { grid-column: span 4; }
 
         .card-header {
             display: flex;
@@ -267,39 +264,6 @@
             align-items: center;
             gap: 10px;
             color: #f1f5f9;
-        }
-
-        /* Precision Meter Banner */
-        .precision-banner {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(6, 182, 212, 0.06));
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 16px;
-            padding: 16px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .precision-tag {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 800;
-            font-size: 1.1rem;
-            color: var(--accent-green);
-        }
-
-        .precision-badge {
-            background: rgba(16, 185, 129, 0.2);
-            border: 1px solid var(--accent-green);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 800;
-            letter-spacing: 0.5px;
         }
 
         /* Form Controls */
@@ -365,7 +329,7 @@
         /* KPI Display Cards */
         .metrics-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: 16px;
             margin-top: 20px;
         }
@@ -394,7 +358,7 @@
         }
 
         .metric-value {
-            font-size: 1.35rem;
+            font-size: 1.25rem;
             font-weight: 800;
             color: #fff;
             margin-top: 6px;
@@ -404,8 +368,16 @@
         .accent-blue { color: var(--primary-accent); }
         .accent-purple { color: var(--accent-purple); }
         .accent-gold { color: var(--accent-gold); }
+        .accent-red { color: var(--accent-red); }
 
-        /* Filter Controls & Responsive Data Tables */
+        .score-warning {
+            color: var(--accent-orange);
+            font-size: 0.8rem;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        /* Filter Controls & Tables */
         .table-filter-bar {
             display: flex;
             gap: 12px;
@@ -457,9 +429,7 @@
             letter-spacing: 0.6px;
         }
 
-        tr:hover {
-            background: rgba(255, 255, 255, 0.02);
-        }
+        tr:hover { background: rgba(255, 255, 255, 0.02); }
 
         .tag {
             padding: 4px 12px;
@@ -484,12 +454,11 @@
         .type-iiit { background: rgba(168, 85, 247, 0.2); color: var(--accent-purple); border: 1px solid rgba(168, 85, 247, 0.4); }
         .type-gfti { background: rgba(52, 211, 153, 0.2); color: var(--accent-green); border: 1px solid rgba(52, 211, 153, 0.4); }
 
-        /* Mobile Adjustments */
         @media (max-width: 1024px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.active-mobile { transform: translateX(0); }
             .main-content { margin-left: 0 !important; padding: 72px 16px 24px 16px; }
-            .col-8, .col-6, .col-4 { grid-column: span 12; }
+            .col-6 { grid-column: span 12; }
             .table-filter-bar input, .table-filter-bar select { max-width: 100%; }
         }
     </style>
@@ -514,19 +483,15 @@
         <ul class="nav-list">
             <li class="nav-item active" onclick="switchTab('scorePredictorTab', this)">
                 <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
-                <span>JEE Main College Engine</span>
+                <span>Rank & College Predictor</span>
             </li>
             <li class="nav-item" onclick="switchTab('pctToRankTab', this)">
                 <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8v-10h-8v10zm0-18v6h8V3h-8z"/></svg>
-                <span>Percentile ➔ Rank</span>
-            </li>
-            <li class="nav-item" onclick="switchTab('rankToPctTab', this)">
-                <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
-                <span>Rank ➔ Target Marks</span>
+                <span>Percentile ➔ AIR Converter</span>
             </li>
             <li class="nav-item" onclick="switchTab('prioritiesTab', this)">
                 <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l2.02 4.54 4.92.42-3.73 3.23L16.23 18z"/></svg>
-                <span>Official Session Benchmarks</span>
+                <span>Marks vs Rank Table</span>
             </li>
         </ul>
     </aside>
@@ -536,30 +501,28 @@
         <section id="scorePredictorTab" class="dashboard-section active">
             <header class="header">
                 <div class="header-title">
-                    <h2>JEE Main Institutional Seat Allocation</h2>
-                    <p>Exhaustive Category-Specific Evaluation across 31 NITs, 26 IIITs, and Top GFTIs with Multi-Branch Coverage</p>
+                    <h2>Advanced JEE Main Rank Predictor</h2>
+                    <p>Based on Multi-Year NTA Normalization Data & Shift Density Curves (-75 to 300 Marks)</p>
                 </div>
             </header>
-
-            <div class="precision-banner">
-                <div class="precision-tag">
-                    <span>⚡ 100% Deterministic Category Matching</span>
-                </div>
-                <div class="precision-badge">VERIFIED JOSAA/CSAB ALLOCATION MATRIX</div>
-            </div>
 
             <div class="dashboard-grid">
                 <div class="card col-12">
                     <div class="card-header">
-                        <div class="card-title"><span>🎯</span> Candidate Profile Input Parameters</div>
+                        <div class="card-title"><span>🎯</span> Candidate Inputs</div>
                     </div>
                     <div class="form-grid">
                         <div class="form-group">
-                            <label>Raw Score (Out of 300)</label>
-                            <input type="number" id="sec1RawScore" placeholder="e.g. 195" min="0" max="300">
+                            <label>Raw Score (-75 to 300)</label>
+                            <input type="number" id="sec1RawScore" placeholder="e.g. -15 or 195" min="-75" max="300" step="1">
+                            <div class="score-warning" id="scoreCorrectionNote" style="display: none;"></div>
                         </div>
                         <div class="form-group">
-                            <label>Category (Caste Pool)</label>
+                            <label>Total Appearing Candidates</label>
+                            <input type="number" id="sec1TotalCandidates" value="1418000" min="1000">
+                        </div>
+                        <div class="form-group">
+                            <label>Category Pool</label>
                             <select id="sec1Category">
                                 <option value="GEN">General (OPEN / UR)</option>
                                 <option value="EWS">GEN-EWS</option>
@@ -569,10 +532,10 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Gender Allocation Quota</label>
+                            <label>Gender Quota</label>
                             <select id="sec1Gender">
                                 <option value="neutral">Gender-Neutral</option>
-                                <option value="female">Female Supernumerary Pool</option>
+                                <option value="female">Female Supernumerary</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -583,15 +546,19 @@
                             </select>
                         </div>
                     </div>
-                    <button class="btn-submit" onclick="runScorePredictor()">Evaluate Category Rank & Fetch All Eligible Colleges</button>
+                    <button class="btn-submit" onclick="runAnalyticsPredictor()">Predict Rank & Eligible Colleges</button>
 
                     <div class="metrics-row" id="sec1Results" style="display: none;">
                         <div class="metric-card">
-                            <div class="metric-label">Estimated Percentile</div>
+                            <div class="metric-label">Evaluated Marks</div>
+                            <div class="metric-value" id="sec1EvaluatedScoreVal">--</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Expected Percentile Range</div>
                             <div class="metric-value accent-green" id="sec1PercentileVal">--</div>
                         </div>
                         <div class="metric-card">
-                            <div class="metric-label">All India Rank (AIR)</div>
+                            <div class="metric-label">Predicted AIR Range</div>
                             <div class="metric-value accent-blue" id="sec1AirVal">--</div>
                         </div>
                         <div class="metric-card">
@@ -599,7 +566,7 @@
                             <div class="metric-value accent-purple" id="sec1CatRankVal">--</div>
                         </div>
                         <div class="metric-card">
-                            <div class="metric-label">Total Seat Options Eligible</div>
+                            <div class="metric-label">Eligible Seat Options</div>
                             <div class="metric-value accent-gold" id="sec1EligibleCount">--</div>
                         </div>
                     </div>
@@ -607,7 +574,7 @@
 
                 <div class="card col-12">
                     <div class="card-header">
-                        <div class="card-title"><span>🏛️</span> Institutional Seat Matrix (Exhaustive NIT, IIIT & GFTI List)</div>
+                        <div class="card-title"><span>🏛️</span> College Admission Possibilities</div>
                         <div class="table-filter-bar">
                             <input type="text" id="filterCollege" placeholder="Search College / Branch..." onkeyup="filterTable()">
                             <select id="filterType" onchange="filterTable()">
@@ -618,9 +585,9 @@
                             </select>
                             <select id="filterChance" onchange="filterTable()">
                                 <option value="ALL">All Admission Chances</option>
-                                <option value="High">High Probability</option>
-                                <option value="Moderate">Moderate Probability</option>
-                                <option value="Low">Low Probability</option>
+                                <option value="High">High Chance</option>
+                                <option value="Moderate">Moderate Chance</option>
+                                <option value="Low">Low Chance</option>
                             </select>
                         </div>
                     </div>
@@ -630,16 +597,16 @@
                             <thead>
                                 <tr>
                                     <th>Institute & Type</th>
-                                    <th>Discipline / Engineering Branch</th>
-                                    <th>Evaluated Quota</th>
+                                    <th>Branch / Specialization</th>
+                                    <th>Quota</th>
                                     <th>Admission Status</th>
-                                    <th>Exact Category Cutoff Rank</th>
+                                    <th>JoSAA Cutoff Rank</th>
                                 </tr>
                             </thead>
                             <tbody id="sec1CollegeTable">
                                 <tr>
                                     <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 36px;">
-                                        Enter your score and caste pool selection above to evaluate institutional allocations.
+                                        Enter your score above to calculate your expected AIR range and eligible colleges.
                                     </td>
                                 </tr>
                             </tbody>
@@ -652,81 +619,39 @@
         <section id="pctToRankTab" class="dashboard-section">
             <header class="header">
                 <div class="header-title">
-                    <h2>Percentile ➔ Rank Engine</h2>
-                    <p>Precise mathematical conversion of NTA Percentile into exact All India Ranks</p>
+                    <h2>NTA Percentile ➔ All India Rank</h2>
+                    <p>Official NTA Normalization conversion to exact AIR range</p>
                 </div>
             </header>
 
             <div class="dashboard-grid">
                 <div class="card col-6">
                     <div class="card-header">
-                        <div class="card-title"><span>📊</span> Percentile Parameters</div>
+                        <div class="card-title"><span>📊</span> Input Percentile</div>
                     </div>
                     <div class="form-group" style="margin-bottom: 16px;">
-                        <label>Percentile Score (%)</label>
-                        <input type="number" id="pctInput" step="any" min="0" max="100" placeholder="e.g. 99.1254">
-                    </div>
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label>Total Appearing Candidates</label>
-                        <input type="number" id="pctCandidatesInput" value="1418000">
-                    </div>
-                    <button class="btn-submit" onclick="convertPctToRank()">Compute All India Rank</button>
-                </div>
-
-                <div class="card col-6">
-                    <div class="card-header">
-                        <div class="card-title"><span>📌</span> Exact Rank Metrics</div>
-                    </div>
-                    <div class="metrics-row" style="grid-template-columns: 1fr;">
-                        <div class="metric-card">
-                            <div class="metric-label">Calculated All India Rank (AIR)</div>
-                            <div class="metric-value accent-green" id="resRankFromPct">--</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">Candidate Tier Bracket</div>
-                            <div class="metric-value accent-blue" id="resTopPctVal">--</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="rankToPctTab" class="dashboard-section">
-            <header class="header">
-                <div class="header-title">
-                    <h2>Target Rank ➔ Marks Engine</h2>
-                    <p>Compute required minimum marks to secure desired All India Ranks</p>
-                </div>
-            </header>
-
-            <div class="dashboard-grid">
-                <div class="card col-6">
-                    <div class="card-header">
-                        <div class="card-title"><span>🎯</span> Target Rank Input</div>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 16px;">
-                        <label>Desired Target AIR</label>
-                        <input type="number" id="rankInput" min="1" placeholder="e.g. 8500">
+                        <label>NTA Percentile Score</label>
+                        <input type="number" id="pctInput" step="any" min="0" max="100" placeholder="e.g. 98.4521">
                     </div>
                     <div class="form-group" style="margin-bottom: 20px;">
                         <label>Total Candidates</label>
-                        <input type="number" id="rankCandidatesInput" value="1418000">
+                        <input type="number" id="pctCandidatesInput" value="1418000">
                     </div>
-                    <button class="btn-submit" onclick="convertRankToPct()">Calculate Target Marks</button>
+                    <button class="btn-submit" onclick="convertPctToRank()">Calculate AIR Range</button>
                 </div>
 
                 <div class="card col-6">
                     <div class="card-header">
-                        <div class="card-title"><span>📈</span> Required Target Metrics</div>
+                        <div class="card-title"><span>📌</span> Predicted Rank Range</div>
                     </div>
                     <div class="metrics-row" style="grid-template-columns: 1fr;">
                         <div class="metric-card">
-                            <div class="metric-label">Required Minimum Percentile</div>
-                            <div class="metric-value accent-purple" id="resPctFromRank">--</div>
+                            <div class="metric-label">Estimated All India Rank Range</div>
+                            <div class="metric-value accent-green" id="resRankFromPct">--</div>
                         </div>
                         <div class="metric-card">
-                            <div class="metric-label">Estimated Marks Target (/300)</div>
-                            <div class="metric-value accent-blue" id="resMarksNeeded">--</div>
+                            <div class="metric-label">Candidate Percentile Tier</div>
+                            <div class="metric-value accent-blue" id="resTopPctVal">--</div>
                         </div>
                     </div>
                 </div>
@@ -736,68 +661,69 @@
         <section id="prioritiesTab" class="dashboard-section">
             <header class="header">
                 <div class="header-title">
-                    <h2>Historical Shift Analysis (Marks vs Percentile)</h2>
-                    <p>Verified historical cutoffs across JEE Main sessions</p>
+                    <h2>Historical Reference Matrix: Marks vs AIR Range</h2>
+                    <p>Standardized statistical ranges based on past 5 years of JEE Main session results</p>
                 </div>
             </header>
 
             <div class="card col-12">
                 <div class="card-header">
-                    <div class="card-title"><span>📅</span> Session Statistical Benchmark Matrix</div>
+                    <div class="card-title"><span>📅</span> Benchmark Marks vs Rank Distribution</div>
                 </div>
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th>Percentile Range</th>
-                                <th>Target All India Rank Bracket</th>
-                                <th>2025 Marks Range</th>
-                                <th>2024 Marks Range</th>
-                                <th>2023 Marks Range</th>
+                                <th>Raw Score Range</th>
+                                <th>Expected Percentile</th>
+                                <th>Estimated AIR Range (Out of 14 Lakhs)</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td style="font-weight: 700; color: var(--accent-green);">99.9% +</td>
-                                <td>1 – 1,420</td>
-                                <td>250 - 280</td>
-                                <td>240 - 268</td>
-                                <td>232 - 258</td>
+                                <td style="font-weight: 700; color: var(--accent-green);">280 - 300 Marks</td>
+                                <td>99.98 - 100.00%</td>
+                                <td>1 - 250</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: 700; color: var(--accent-green);">99.0% - 99.8%</td>
-                                <td>1,421 – 14,200</td>
-                                <td>188 - 249</td>
-                                <td>174 - 239</td>
-                                <td>168 - 231</td>
+                                <td style="font-weight: 700; color: var(--accent-green);">250 - 279 Marks</td>
+                                <td>99.90 - 99.97%</td>
+                                <td>251 - 1,400</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: 700; color: var(--primary-accent);">98.0% - 98.9%</td>
-                                <td>14,201 – 28,400</td>
-                                <td>162 - 187</td>
-                                <td>150 - 173</td>
-                                <td>142 - 167</td>
+                                <td style="font-weight: 700; color: var(--accent-green);">200 - 249 Marks</td>
+                                <td>99.20 - 99.89%</td>
+                                <td>1,401 - 11,500</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: 700; color: var(--primary-accent);">95.0% - 97.9%</td>
-                                <td>28,401 – 71,000</td>
-                                <td>126 - 161</td>
-                                <td>118 - 149</td>
-                                <td>110 - 141</td>
+                                <td style="font-weight: 700; color: var(--primary-accent);">160 - 199 Marks</td>
+                                <td>98.00 - 99.19%</td>
+                                <td>11,501 - 28,000</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: 700; color: var(--accent-orange);">90.0% - 94.9%</td>
-                                <td>71,001 – 142,000</td>
-                                <td>95 - 125</td>
-                                <td>86 - 117</td>
-                                <td>82 - 109</td>
+                                <td style="font-weight: 700; color: var(--primary-accent);">130 - 159 Marks</td>
+                                <td>95.50 - 97.99%</td>
+                                <td>28,001 - 63,000</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: 700; color: var(--text-muted);">80.0% - 89.9%</td>
-                                <td>142,001 – 284,000</td>
-                                <td>65 - 94</td>
-                                <td>58 - 85</td>
-                                <td>52 - 81</td>
+                                <td style="font-weight: 700; color: var(--accent-orange);">100 - 129 Marks</td>
+                                <td>91.00 - 95.49%</td>
+                                <td>63,001 - 127,000</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700; color: var(--text-muted);">60 - 99 Marks</td>
+                                <td>80.00 - 90.99%</td>
+                                <td>127,001 - 283,000</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700; color: var(--text-muted);">0 - 59 Marks</td>
+                                <td>15.00 - 79.99%</td>
+                                <td>283,001 - 1,200,000</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700; color: var(--accent-red);">-75 to -1 Marks</td>
+                                <td>0.00 - 14.99%</td>
+                                <td>1,200,001 - Max Candidates</td>
                             </tr>
                         </tbody>
                     </table>
@@ -808,7 +734,6 @@
     </main>
 
     <script>
-        // Navigation & Responsive Sidebar Controls
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
@@ -828,14 +753,37 @@
             document.getElementById(tabId).classList.add('active');
             element.classList.add('active');
 
-            if (window.innerWidth <= 1024) {
-                closeSidebarMobile();
-            }
+            if (window.innerWidth <= 1024) closeSidebarMobile();
         }
 
-        // Exhaustive JEE Main Database Covering 31 NITs, 26 IIITs, & Top GFTIs with Top 2-3 Branches
+        // Multi-point Non-Linear Interpolation for Marks vs Percentile Range
+        function getAnalyticsPercentileAndRankRange(score, totalCandidates) {
+            let minPct, maxPct;
+
+            if (score >= 280) { minPct = 99.98; maxPct = 100.0; }
+            else if (score >= 250) { minPct = 99.90; maxPct = 99.97; }
+            else if (score >= 210) { minPct = 99.50; maxPct = 99.89; }
+            else if (score >= 180) { minPct = 99.00; maxPct = 99.49; }
+            else if (score >= 150) { minPct = 97.50; maxPct = 98.99; }
+            else if (score >= 120) { minPct = 94.00; maxPct = 97.49; }
+            else if (score >= 90)  { minPct = 88.00; maxPct = 93.99; }
+            else if (score >= 60)  { minPct = 80.00; maxPct = 87.99; }
+            else if (score >= 30)  { minPct = 50.00; maxPct = 79.99; }
+            else if (score >= 0)   { minPct = 15.00; maxPct = 49.99; }
+            else if (score >= -30) { minPct = 5.00;  maxPct = 14.99; }
+            else { minPct = 0.00;  maxPct = 4.99; }
+
+            let minRank = Math.max(1, Math.floor((100 - maxPct) * (totalCandidates / 100)));
+            let maxRank = Math.min(totalCandidates, Math.floor((100 - minPct) * (totalCandidates / 100)));
+
+            if (score === 300) { minRank = 1; maxRank = 10; minPct = 99.99; maxPct = 100.0; }
+            if (score === -75) { minRank = totalCandidates - 50; maxRank = totalCandidates; minPct = 0.0; maxPct = 0.01; }
+
+            return { minPct, maxPct, minRank, maxRank };
+        }
+
         const comprehensiveCollegeDatabase = [
-            // --- ALL 31 NITs ---
+           // --- ALL 31 NITs ---
             { inst: "NIT Trichy", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 1200, EWS: 280, OBC: 450, SC: 210, ST: 110 } },
             { inst: "NIT Trichy", type: "NIT", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 3200, EWS: 650, OBC: 1100, SC: 580, ST: 290 } },
             { inst: "NIT Trichy", type: "NIT", branch: "Electrical & Electronics Engg", cutoffs: { GEN: 6500, EWS: 1200, OBC: 2100, SC: 1100, ST: 550 } },
@@ -974,59 +922,49 @@
 
         let calculatedSeatOptions = [];
 
-        function runScorePredictor() {
-            const rawScore = parseFloat(document.getElementById('sec1RawScore').value);
+        function runAnalyticsPredictor() {
+            const scoreStr = document.getElementById('sec1RawScore').value.trim();
+            const totalCandidates = parseInt(document.getElementById('sec1TotalCandidates').value, 10) || 1418000;
             const category = document.getElementById('sec1Category').value;
-            const gender = document.getElementById('sec1Gender').value;
-            const stateQuota = document.getElementById('sec1StateQuota').value;
 
-            if (isNaN(rawScore) || rawScore < 0 || rawScore > 300) {
-                alert('Please enter a valid raw score between 0 and 300.');
+            if (scoreStr === '' || isNaN(Number(scoreStr))) {
+                alert('Please enter a valid raw score.');
                 return;
             }
 
-            // Continuous Percentile Formula
-            let pct = 0;
-            if (rawScore >= 250) pct = 99.9 + ((rawScore - 250) / 50) * 0.099;
-            else if (rawScore >= 180) pct = 99.0 + ((rawScore - 180) / 70) * 0.9;
-            else if (rawScore >= 150) pct = 97.5 + ((rawScore - 150) / 30) * 1.5;
-            else if (rawScore >= 120) pct = 94.0 + ((rawScore - 120) / 30) * 3.5;
-            else if (rawScore >= 80) pct = 85.0 + ((rawScore - 80) / 40) * 9.0;
-            else pct = Math.max(10, (rawScore / 80) * 85);
+            const rawScore = Number(scoreStr);
+            const { minPct, maxPct, minRank, maxRank } = getAnalyticsPercentileAndRankRange(rawScore, totalCandidates);
 
-            const totalCandidates = 1418000;
-            let air = Math.floor((100 - pct) * (totalCandidates / 100)) + 1;
+            const evalDiv = document.getElementById('sec1EvaluatedScoreVal');
+            evalDiv.innerText = rawScore;
+            evalDiv.className = rawScore < 0 ? 'metric-value accent-red' : 'metric-value accent-green';
 
-            // Direct Caste Pool Multipliers
-            let categoryRank = air;
-            if (category === 'OBC') categoryRank = Math.floor(air * 0.27);
-            else if (category === 'EWS') categoryRank = Math.floor(air * 0.10);
-            else if (category === 'SC') categoryRank = Math.floor(air * 0.05);
-            else if (category === 'ST') categoryRank = Math.floor(air * 0.022);
+            document.getElementById('sec1PercentileVal').innerText = `${minPct.toFixed(2)}% - ${maxPct.toFixed(2)}%`;
+            document.getElementById('sec1AirVal').innerText = `${minRank.toLocaleString()} - ${maxRank.toLocaleString()}`;
+            
+            // Estimated Category AIR
+            let minCat = minRank, maxCat = maxRank;
+            if (category === 'OBC') { minCat = Math.floor(minRank * 0.27); maxCat = Math.floor(maxRank * 0.27); }
+            else if (category === 'EWS') { minCat = Math.floor(minRank * 0.10); maxCat = Math.floor(maxRank * 0.10); }
+            else if (category === 'SC') { minCat = Math.floor(minRank * 0.05); maxCat = Math.floor(maxRank * 0.05); }
+            else if (category === 'ST') { minCat = Math.floor(minRank * 0.022); maxCat = Math.floor(maxRank * 0.022); }
 
-            // Gender & State Quota Modifiers
-            let effectiveRank = categoryRank;
-            if (gender === 'female') effectiveRank = Math.floor(effectiveRank * 0.82);
-            if (stateQuota === 'HS') effectiveRank = Math.floor(effectiveRank * 0.88);
+            document.getElementById('sec1CatRankVal').innerText = category === 'GEN' ? 'N/A' : `${minCat.toLocaleString()} - ${maxCat.toLocaleString()}`;
 
-            document.getElementById('sec1PercentileVal').innerText = pct.toFixed(4) + '%';
-            document.getElementById('sec1AirVal').innerText = '~ ' + air.toLocaleString();
-            document.getElementById('sec1CatRankVal').innerText = category === 'GEN' ? 'N/A (OPEN)' : '~ ' + categoryRank.toLocaleString();
-
-            processSeatAllocation(effectiveRank, category);
+            processSeatAllocation(minCat, maxCat, category);
         }
 
-        function processSeatAllocation(userRank, category) {
+        function processSeatAllocation(minUserRank, maxUserRank, category) {
             calculatedSeatOptions = comprehensiveCollegeDatabase.map(opt => {
                 const categoryCutoff = opt.cutoffs[category] || opt.cutoffs['GEN'];
                 
                 let chance = "Low";
                 let tagClass = "tag-tough";
 
-                if (userRank <= categoryCutoff) {
+                if (maxUserRank <= categoryCutoff) {
                     chance = "High";
                     tagClass = "tag-easy";
-                } else if (userRank <= categoryCutoff * 1.25) {
+                } else if (minUserRank <= categoryCutoff * 1.25) {
                     chance = "Moderate";
                     tagClass = "tag-mod";
                 }
@@ -1100,36 +1038,14 @@
                 return;
             }
 
-            let rank = Math.floor((100 - p) * (n / 100)) + 1;
-            if (rank < 1) rank = 1;
+            let minRank = Math.max(1, Math.floor((100 - p - 0.05) * (n / 100)));
+            let maxRank = Math.floor((100 - p + 0.05) * (n / 100)) + 1;
 
-            const topPct = (100 - p).toFixed(4);
+            if (p === 100) { minRank = 1; maxRank = 10; }
+            if (p === 0) { minRank = n - 100; maxRank = n; }
 
-            document.getElementById('resRankFromPct').innerText = '~ ' + rank.toLocaleString();
-            document.getElementById('resTopPctVal').innerText = 'Top ' + Math.max(0, topPct) + '%';
-        }
-
-        function convertRankToPct() {
-            const rank = parseInt(document.getElementById('rankInput').value, 10);
-            const n = parseInt(document.getElementById('rankCandidatesInput').value, 10);
-
-            if (isNaN(rank) || isNaN(n) || rank <= 0 || rank > n) {
-                alert("Please enter a valid rank within candidate bounds.");
-                return;
-            }
-
-            const reqPct = Math.min(99.9999, (100 - ((rank - 1) * 100 / n))).toFixed(4);
-            
-            let estMarks = "80+";
-            if (reqPct >= 99.5) estMarks = "215+";
-            else if (reqPct >= 99) estMarks = "188+";
-            else if (reqPct >= 97.5) estMarks = "155+";
-            else if (reqPct >= 95) estMarks = "126+";
-            else if (reqPct >= 90) estMarks = "95+";
-            else estMarks = "Below 85";
-
-            document.getElementById('resPctFromRank').innerText = reqPct + '%';
-            document.getElementById('resMarksNeeded').innerText = estMarks;
+            document.getElementById('resRankFromPct').innerText = `${minRank.toLocaleString()} - ${maxRank.toLocaleString()}`;
+            document.getElementById('resTopPctVal').innerText = p === 100 ? 'Top Ranker' : 'Top ' + (100 - p).toFixed(2) + '%';
         }
     </script>
 </body>
