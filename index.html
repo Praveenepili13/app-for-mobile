@@ -50,7 +50,6 @@
                 radial-gradient(circle at 85% 85%, rgba(124, 58, 237, 0.07) 0%, transparent 45%);
         }
 
-        /* Sidebar Navigation */
         .sidebar {
             width: 280px;
             background: var(--bg-sidebar);
@@ -137,7 +136,6 @@
             flex-shrink: 0;
         }
 
-        /* Responsive Mobile Controls */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -185,7 +183,6 @@
             color: var(--primary-accent);
         }
 
-        /* Main Container */
         .main-content {
             margin-left: 280px;
             flex: 1;
@@ -225,7 +222,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Dashboard Grid & Cards */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
@@ -266,7 +262,6 @@
             color: #f1f5f9;
         }
 
-        /* Form Controls */
         .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -326,7 +321,6 @@
 
         .btn-submit:active { transform: scale(0.98); }
 
-        /* KPI Display Cards */
         .metrics-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -377,7 +371,6 @@
             font-weight: 600;
         }
 
-        /* Filter Controls & Tables */
         .table-filter-bar {
             display: flex;
             gap: 12px;
@@ -490,9 +483,9 @@
                 <span>Percentile ➔ AIR Converter</span>
             </li>
             <li class="nav-item" onclick="switchTab('rankToPctTab', this)">
-    <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
-    <span>AIR ➔ Percentile Converter</span>
-</li>
+                <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
+                <span>AIR ➔ Percentile Converter</span>
+            </li>
             <li class="nav-item" onclick="switchTab('prioritiesTab', this)">
                 <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l2.02 4.54 4.92.42-3.73 3.23L16.23 18z"/></svg>
                 <span>Marks vs Rank Table</span>
@@ -502,6 +495,7 @@
 
     <main class="main-content">
 
+        <!-- Tab 1: Predictor -->
         <section id="scorePredictorTab" class="dashboard-section active">
             <header class="header">
                 <div class="header-title">
@@ -620,6 +614,7 @@
             </div>
         </section>
 
+        <!-- Tab 2: Percentile to AIR -->
         <section id="pctToRankTab" class="dashboard-section">
             <header class="header">
                 <div class="header-title">
@@ -662,48 +657,51 @@
             </div>
         </section>
 
+        <!-- Tab 3: AIR to Percentile -->
+        <section id="rankToPctTab" class="dashboard-section">
+            <header class="header">
+                <div class="header-title">
+                    <h2>All India Rank ➔ NTA Percentile</h2>
+                    <p>Convert your target or estimated All India Rank to expected NTA Percentile</p>
+                </div>
+            </header>
+
+            <div class="dashboard-grid">
+                <div class="card col-6">
+                    <div class="card-header">
+                        <div class="card-title"><span>🎯</span> Input Rank</div>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label>All India Rank (AIR)</label>
+                        <input type="number" id="rankInput" min="1" placeholder="e.g. 15000">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label>Total Candidates</label>
+                        <input type="number" id="rankCandidatesInput" value="1418000">
+                    </div>
+                    <button class="btn-submit" onclick="convertRankToPct()">Calculate Percentile</button>
+                </div>
+
+                <div class="card col-6">
+                    <div class="card-header">
+                        <div class="card-title"><span>📊</span> Predicted Percentile</div>
+                    </div>
+                    <div class="metrics-row" style="grid-template-columns: 1fr;">
+                        <div class="metric-card">
+                            <div class="metric-label">Estimated NTA Percentile</div>
+                            <div class="metric-value accent-green" id="resPctFromRank">--</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Percentile Tier Description</div>
+                            <div class="metric-value accent-blue" id="resTierFromRank">--</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 4: Historical Matrix -->
         <section id="prioritiesTab" class="dashboard-section">
-            <section id="rankToPctTab" class="dashboard-section">
-    <header class="header">
-        <div class="header-title">
-            <h2>All India Rank ➔ NTA Percentile</h2>
-            <p>Convert your target or estimated All India Rank to expected NTA Percentile</p>
-        </div>
-    </header>
-
-    <div class="dashboard-grid">
-        <div class="card col-6">
-            <div class="card-header">
-                <div class="card-title"><span>🎯</span> Input Rank</div>
-            </div>
-            <div class="form-group" style="margin-bottom: 16px;">
-                <label>All India Rank (AIR)</label>
-                <input type="number" id="rankInput" min="1" placeholder="e.g. 15000">
-            </div>
-            <div class="form-group" style="margin-bottom: 20px;">
-                <label>Total Candidates</label>
-                <input type="number" id="rankCandidatesInput" value="1418000">
-            </div>
-            <button class="btn-submit" onclick="convertRankToPct()">Calculate Percentile</button>
-        </div>
-
-        <div class="card col-6">
-            <div class="card-header">
-                <div class="card-title"><span>📊</span> Predicted Percentile</div>
-            </div>
-            <div class="metrics-row" style="grid-template-columns: 1fr;">
-                <div class="metric-card">
-                    <div class="metric-label">Estimated NTA Percentile</div>
-                    <div class="metric-value accent-green" id="resPctFromRank">--</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-label">Percentile Tier Description</div>
-                    <div class="metric-value accent-blue" id="resTierFromRank">--</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
             <header class="header">
                 <div class="header-title">
                     <h2>Historical Reference Matrix: Marks vs AIR Range</h2>
@@ -799,6 +797,63 @@
             element.classList.add('active');
 
             if (window.innerWidth <= 1024) closeSidebarMobile();
+        }
+
+        function convertPctToRank() {
+            const pct = parseFloat(document.getElementById('pctInput').value);
+            const total = parseInt(document.getElementById('pctCandidatesInput').value, 10);
+            if (isNaN(pct) || isNaN(total) || pct < 0 || pct > 100) return;
+            
+            const expectedRank = Math.round(((100 - pct) / 100) * total);
+            const minRank = Math.max(1, Math.round(expectedRank * 0.95));
+            const maxRank = Math.round(expectedRank * 1.05);
+            
+            document.getElementById('resRankFromPct').innerText = `${minRank.toLocaleString()} - ${maxRank.toLocaleString()}`;
+            document.getElementById('resTopPctVal').innerText = `Top ${(100 - pct).toFixed(2)}% of test takers`;
+        }
+
+        function convertRankToPct() {
+            const rank = parseInt(document.getElementById('rankInput').value, 10);
+            const total = parseInt(document.getElementById('rankCandidatesInput').value, 10);
+            if (isNaN(rank) || isNaN(total) || rank < 1) return;
+            
+            const pct = Math.max(0, 100 - (rank / total) * 100);
+            document.getElementById('resPctFromRank').innerText = `${pct.toFixed(4)}%`;
+            document.getElementById('resTierFromRank').innerText = rank <= 10000 ? "Top Tier Elite" : rank <= 50000 ? "High Competitive Range" : "Moderate Range";
+        }
+
+        function runAnalyticsPredictor() {
+            const rawScore = parseFloat(document.getElementById('sec1RawScore').value);
+            const total = parseInt(document.getElementById('sec1TotalCandidates').value, 10);
+            if (isNaN(rawScore) || isNaN(total)) return;
+
+            let pctMin = 0, pctMax = 0, airMin = 0, airMax = 0;
+            if (rawScore >= 250) { pctMin = 99.90; pctMax = 100.0; }
+            else if (rawScore >= 200) { pctMin = 99.20; pctMax = 99.89; }
+            else if (rawScore >= 160) { pctMin = 98.00; pctMax = 99.19; }
+            else if (rawScore >= 130) { pctMin = 95.50; pctMax = 97.99; }
+            else if (rawScore >= 100) { pctMin = 91.00; pctMax = 95.49; }
+            else if (rawScore >= 60) { pctMin = 80.00; pctMax = 90.99; }
+            else { pctMin = 10.00; pctMax = 79.99; }
+
+            airMin = Math.max(1, Math.round(((100 - pctMax) / 100) * total));
+            airMax = Math.round(((100 - pctMin) / 100) * total);
+
+            document.getElementById('sec1EvaluatedScoreVal').innerText = rawScore;
+            document.getElementById('sec1PercentileVal').innerText = `${pctMin}% - ${pctMax}%`;
+            document.getElementById('sec1AirVal').innerText = `${airMin.toLocaleString()} - ${airMax.toLocaleString()}`;
+            document.getElementById('sec1CatRankVal').innerText = `~${Math.round(airMin * 0.27).toLocaleString()}`;
+            document.getElementById('sec1EligibleCount').innerText = rawScore > 120 ? "42+ Options" : "12+ Options";
+            document.getElementById('sec1Results').style.display = 'grid';
+        }
+
+        function filterTable() {
+            const text = document.getElementById('filterCollege').value.toLowerCase();
+            const rows = document.querySelectorAll('#sec1CollegeTable tr');
+            rows.forEach(row => {
+                const content = row.innerText.toLowerCase();
+                row.style.display = content.includes(text) ? '' : 'none';
+            });
         }
 
         // Multi-point Non-Linear Interpolation for Marks vs Percentile Range
