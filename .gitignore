@@ -1,0 +1,6 @@
+node_modules
+android/
+ios/
+.vscode/
+.idea/
+.DS_Store
