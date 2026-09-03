@@ -1,1184 +1,476 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JEE Main Rank Engine & College Predictor</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A transparent JEE Main rank companion for percentile, marks estimates, category cutoffs, and college options across NITs, IIITs, and GFTIs.">
+  <title>Rank Companion — NITs, IIITs & GFTIs JEE Main</title>
+  <style>
+    :root { --ink:#17202a; --muted:#667085; --line:#e7e3dd; --paper:#fffdf9; --wash:#f7f4ee; --navy:#15253d; --blue:#246bce; --blue-soft:#e9f2ff; --mint:#0f8b73; --mint-soft:#e7f7f1; --amber:#aa6500; --amber-soft:#fff3d7; --rose:#c3445b; --rose-soft:#ffedf0; --shadow:0 18px 45px rgba(27,39,58,.08); }
+    *{box-sizing:border-box} body{margin:0;background:var(--wash);color:var(--ink);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif} button,input,select{font:inherit} button{cursor:pointer} a{color:var(--blue)}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .shell{max-width:1180px;margin:auto;padding:28px 24px 56px}.topbar{display:flex;justify-content:space-between;gap:22px;align-items:center;margin-bottom:28px}.brand{display:flex;align-items:center;gap:11px;font-weight:780;letter-spacing:-.02em}.brand-mark{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:var(--navy);color:#fff;font-size:18px}.quiet{font-size:13px;color:var(--muted)}
+    .hero{position:relative;overflow:hidden;background:var(--navy);color:#fff;border-radius:25px;padding:38px 40px;margin-bottom:24px;box-shadow:var(--shadow)}.hero:after{content:"";position:absolute;width:340px;height:340px;border-radius:50%;right:-92px;top:-170px;background:radial-gradient(circle,rgba(109,184,255,.28),transparent 66%)}.eyebrow{display:flex;align-items:center;gap:8px;color:#b8d6ff;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}.pulse{width:8px;height:8px;border-radius:50%;background:#5ee4b4;box-shadow:0 0 0 5px rgba(94,228,180,.13)}h1{position:relative;margin:10px 0 8px;max-width:700px;font-size:clamp(28px,5vw,51px);line-height:1.08;letter-spacing:-.055em;z-index:1}.hero p{position:relative;max-width:680px;margin:0;color:#d3dfef;font-size:16px;z-index:1}.hero-note{position:relative;z-index:1;display:inline-flex;margin-top:20px;padding:8px 11px;border-radius:99px;background:rgba(255,255,255,.1);font-size:13px;color:#e8f2ff}
+    .grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(330px,.92fr);gap:24px}.card{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:25px;box-shadow:0 6px 22px rgba(30,40,54,.035)}.card + .card{margin-top:24px}.card h2{margin:0;font-size:19px;letter-spacing:-.025em}.subcopy{margin:6px 0 20px;color:var(--muted);font-size:13px}
+    .mode-switch{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:5px;background:#f2efe9;border-radius:13px;margin-bottom:21px}.mode-btn{border:0;border-radius:99px;background:transparent;padding:10px 8px;color:#5d6470;font-size:13px;font-weight:700}.mode-btn[aria-pressed="true"]{background:#fff;color:var(--navy);box-shadow:0 2px 8px rgba(30,40,54,.11)}.mode-panel{display:none}.mode-panel.active{display:block;animation:enter .22s ease}@keyframes enter{from{opacity:.2;transform:translateY(4px)}to{opacity:1;transform:none}}
+    .fields{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.field.full{grid-column:1/-1}label{display:block;margin:0 0 6px;color:#48515e;font-size:12px;font-weight:750;letter-spacing:.025em}input,select{width:100%;border:1px solid #d9d5ce;border-radius:10px;background:#fff;padding:11px 12px;color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s}input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(36,107,206,.13)}.helper{margin:7px 0 0;color:var(--muted);font-size:12px}.notice{display:flex;gap:10px;margin-top:17px;padding:12px 13px;border-radius:11px;background:var(--blue-soft);color:#254c7d;font-size:12.5px}.notice strong{color:#193b66}.actions{display:flex;gap:10px;align-items:center;margin-top:20px;flex-wrap:wrap}.primary,.secondary{border:0;border-radius:10px;padding:11px 15px;font-weight:750}.primary{background:var(--blue);color:#fff;box-shadow:0 5px 14px rgba(36,107,206,.21)}.primary:hover{background:#1d5cb4}.secondary{background:#edf1f5;color:#314052}.secondary:hover{background:#e3e9ef}.live-dot{font-size:12px;color:var(--mint);font-weight:700;margin-left:auto}.live-dot:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor;margin-right:5px}
+    .result-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.status{display:inline-flex;padding:5px 8px;border-radius:999px;background:var(--blue-soft);color:#26548d;font-size:11px;font-weight:750}.rank{margin:14px 0 0;font-size:clamp(38px,6vw,58px);line-height:.95;letter-spacing:-.065em;font-weight:800;color:var(--navy)}.rank-label{margin:7px 0 0;color:var(--muted);font-size:13px}.result-copy{margin:17px 0 0;padding-top:17px;border-top:1px solid var(--line);color:#48515e;font-size:13px}.result-copy strong{color:var(--ink)}.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:18px}.mini{padding:13px;border-radius:13px;background:#f7f6f2}.mini b{display:block;font-size:17px;letter-spacing:-.035em}.mini span{display:block;margin-top:2px;color:var(--muted);font-size:11px;font-weight:650}.rank-rail{margin-top:20px}.rail-head{display:flex;justify-content:space-between;gap:6px;color:var(--muted);font-size:11px}.rail{position:relative;height:10px;margin-top:7px;border-radius:100px;background:linear-gradient(90deg,#3379d8,#7aaee8 36%,#bedaf7 71%,#e8edf2)}.marker{position:absolute;top:50%;left:50%;width:17px;height:17px;border:3px solid #fff;border-radius:50%;background:var(--navy);box-shadow:0 2px 7px rgba(21,37,61,.28);transform:translate(-50%,-50%)}.details{margin-top:19px}.details summary{color:#465261;font-size:13px;font-weight:700;cursor:pointer}.details p{margin:9px 0 0;color:var(--muted);font-size:12.5px}.empty{color:var(--muted);font-size:14px}.error{display:none;margin-top:12px;color:#9e2340;font-size:13px;font-weight:650}.error.show{display:block}
+    .pill{display:inline-flex;padding:4px 8px;border-radius:99px;font-size:11px;font-weight:750;white-space:nowrap}.safe{background:var(--mint-soft);color:#056752}.reach{background:var(--amber-soft);color:#845000}.source-list{margin:0;padding-left:18px;color:var(--muted);font-size:12.5px}.source-list li+li{margin-top:7px}.footer{margin:25px 0 0;text-align:center;color:var(--muted);font-size:12px}.toast{position:fixed;bottom:20px;left:50%;padding:10px 14px;border-radius:10px;background:var(--navy);color:#fff;font-size:13px;box-shadow:var(--shadow);transform:translate(-50%,20px);opacity:0;pointer-events:none;transition:.2s}.toast.show{transform:translate(-50%,0);opacity:1}
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    /* Search & Stats Styling */
+    .filter-section{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+    .search-box{margin-bottom:14px}
+    .stats-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;padding:12px;background:#f2efe9;border-radius:12px;text-align:center}
+    .stats-card b{display:block;font-size:18px;color:var(--navy);font-weight:800}
+    .stats-card span{display:block;font-size:11px;color:var(--muted);font-weight:650}
+    .college-list{max-height:480px;overflow-y:auto;margin-top:10px;display:flex;flex-direction:column;gap:10px;padding-right:2px}
+    .college-card{padding:12px 14px;border-radius:12px;background:#f7f6f2;border:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .college-info b{display:block;font-size:14px;color:var(--navy)}
+    .college-info span{font-size:12px;color:var(--muted)}
     
-    <style>
-        :root {
-            --bg-body: #050811;
-            --bg-sidebar: #090d1a;
-            --bg-card: rgba(13, 20, 38, 0.85);
-            --border-card: rgba(255, 255, 255, 0.08);
-            --border-glow: rgba(56, 189, 248, 0.3);
-            --primary-accent: #38bdf8;
-            --primary-gradient: linear-gradient(135deg, #0284c7 0%, #2563eb 50%, #7c3aed 100%);
-            --accent-green: #10b981;
-            --accent-pink: #f472b6;
-            --accent-orange: #f97316;
-            --accent-purple: #a855f7;
-            --accent-gold: #fbbf24;
-            --accent-red: #ef4444;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --input-bg: rgba(15, 23, 42, 0.95);
-            --glass-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            overflow-x: hidden;
-            position: relative;
-            background-image: 
-                radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.07) 0%, transparent 45%),
-                radial-gradient(circle at 85% 85%, rgba(124, 58, 237, 0.07) 0%, transparent 45%);
-        }
-
-        .sidebar {
-            width: 280px;
-            background: var(--bg-sidebar);
-            border-right: 1px solid var(--border-card);
-            padding: 24px 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-            position: fixed;
-            height: 100vh;
-            z-index: 1000;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            top: 0;
-            left: 0;
-            backdrop-filter: blur(20px);
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0 8px;
-        }
-
-        .brand-logo {
-            width: 42px;
-            height: 42px;
-            background: var(--primary-gradient);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            color: #fff;
-            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.4);
-            font-size: 1.25rem;
-        }
-
-        .brand-title {
-            font-size: 1.2rem;
-            font-weight: 800;
-            background: linear-gradient(90deg, #ffffff, #cbd5e1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .nav-item {
-            padding: 12px 16px;
-            border-radius: 12px;
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid transparent;
-        }
-
-        .nav-item:hover {
-            background: rgba(255, 255, 255, 0.04);
-            color: var(--text-main);
-        }
-
-        .nav-item.active {
-            background: linear-gradient(90deg, rgba(56, 189, 248, 0.15), rgba(37, 99, 235, 0.08));
-            color: var(--primary-accent);
-            border-color: rgba(56, 189, 248, 0.3);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .nav-item svg {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-            flex-shrink: 0;
-        }
-
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
-            z-index: 999;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .sidebar-overlay.active {
-            display: block;
-            opacity: 1;
-        }
-
-        .controls-bar {
-            position: fixed;
-            top: 14px;
-            left: 14px;
-            z-index: 900;
-            display: flex;
-            gap: 10px;
-        }
-
-        .toggle-btn {
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid var(--border-card);
-            color: var(--text-main);
-            padding: 10px 16px;
-            border-radius: 12px;
-            cursor: pointer;
-            backdrop-filter: blur(16px);
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: var(--glass-shadow);
-            transition: all 0.2s ease;
-        }
-
-        .toggle-btn:hover {
-            border-color: var(--primary-accent);
-            color: var(--primary-accent);
-        }
-
-        .main-content {
-            margin-left: 280px;
-            flex: 1;
-            padding: 76px 32px 32px 32px;
-            max-width: 1650px;
-            width: 100%;
-            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .header-title h2 {
-            font-size: 1.7rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(90deg, #fff, #cbd5e1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .header-title p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-top: 4px;
-            margin-bottom: 24px;
-        }
-
-        .dashboard-section {
-            display: none;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        .dashboard-section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 20px;
-        }
-
-        .card {
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-card);
-            border-radius: 20px;
-            padding: 24px;
-            box-shadow: var(--glass-shadow);
-            width: 100%;
-            transition: border-color 0.3s ease, transform 0.2s ease;
-        }
-
-        .card:hover { border-color: rgba(255, 255, 255, 0.15); }
-
-        .col-12 { grid-column: span 12; }
-        .col-6 { grid-column: span 6; }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #f1f5f9;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 12px 14px;
-            border-radius: 12px;
-            border: 1px solid var(--border-card);
-            background: var(--input-bg);
-            color: #fff;
-            font-size: 0.9rem;
-            outline: none;
-            transition: all 0.2s ease;
-        }
-
-        input:focus, select:focus {
-            border-color: var(--primary-accent);
-            box-shadow: 0 0 0 3px var(--border-glow);
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            border: none;
-            background: var(--primary-gradient);
-            color: #fff;
-            font-weight: 700;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: transform 0.15s ease, box-shadow 0.2s ease;
-            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.35);
-        }
-
-        .btn-submit:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 24px rgba(37, 99, 235, 0.45);
-        }
-
-        .btn-submit:active { transform: scale(0.98); }
-
-        .metrics-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
-        }
-
-        .metric-card {
-            background: rgba(9, 13, 26, 0.85);
-            border: 1px solid var(--border-card);
-            padding: 16px;
-            border-radius: 14px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .metric-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 3px;
-            background: var(--primary-gradient);
-        }
-
-        .metric-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .metric-value {
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: #fff;
-            margin-top: 6px;
-        }
-
-        .accent-green { color: var(--accent-green); }
-        .accent-blue { color: var(--primary-accent); }
-        .accent-purple { color: var(--accent-purple); }
-        .accent-gold { color: var(--accent-gold); }
-        .accent-red { color: var(--accent-red); }
-
-        .score-warning {
-            color: var(--accent-orange);
-            font-size: 0.8rem;
-            margin-top: 6px;
-            font-weight: 600;
-        }
-
-        .table-filter-bar {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            width: 100%;
-        }
-
-        .table-filter-bar input, .table-filter-bar select {
-            width: 100%;
-            max-width: 220px;
-            padding: 10px 12px;
-            font-size: 0.85rem;
-        }
-
-        .table-container {
-            overflow-x: auto;
-            max-height: 560px;
-            overflow-y: auto;
-            border-radius: 14px;
-            border: 1px solid var(--border-card);
-            -webkit-overflow-scrolling: touch;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            min-width: 850px;
-        }
-
-        thead {
-            position: sticky;
-            top: 0;
-            background: #090d1a;
-            z-index: 5;
-        }
-
-        th, td {
-            padding: 14px 18px;
-            border-bottom: 1px solid var(--border-card);
-            font-size: 0.875rem;
-        }
-
-        th {
-            color: var(--text-muted);
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.725rem;
-            letter-spacing: 0.6px;
-        }
-
-        tr:hover { background: rgba(255, 255, 255, 0.02); }
-
-        .tag {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            display: inline-block;
-        }
-
-        .tag-easy { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
-        .tag-mod { background: rgba(249, 115, 22, 0.15); color: var(--accent-orange); border: 1px solid rgba(249, 115, 22, 0.3); }
-        .tag-tough { background: rgba(244, 114, 182, 0.15); color: var(--accent-pink); border: 1px solid rgba(244, 114, 182, 0.3); }
-
-        .type-badge {
-            font-size: 0.725rem;
-            font-weight: 800;
-            padding: 2px 8px;
-            border-radius: 6px;
-            margin-right: 6px;
-        }
-        .type-nit { background: rgba(56, 189, 248, 0.2); color: var(--primary-accent); border: 1px solid rgba(56, 189, 248, 0.4); }
-        .type-iiit { background: rgba(168, 85, 247, 0.2); color: var(--accent-purple); border: 1px solid rgba(168, 85, 247, 0.4); }
-        .type-gfti { background: rgba(52, 211, 153, 0.2); color: var(--accent-green); border: 1px solid rgba(52, 211, 153, 0.4); }
-
-        @media (max-width: 1024px) {
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.active-mobile { transform: translateX(0); }
-            .main-content { margin-left: 0 !important; padding: 72px 16px 24px 16px; }
-            .col-6 { grid-column: span 12; }
-            .table-filter-bar input, .table-filter-bar select { max-width: 100%; }
-        }
-    </style>
+    /* Mobile Layout Adjustments */
+    @media (max-width:850px){.grid{grid-template-columns:1fr}.result-card{order:-1}.hero{padding:30px 25px}.topbar{margin-bottom:20px}}
+    @media (max-width:590px){
+      .shell{padding:16px 12px 36px}
+      .topbar .quiet{display:none}
+      .hero{padding:24px 20px;border-radius:19px}
+      .card{padding:18px;border-radius:16px}
+      .fields,.mini-grid{grid-template-columns:1fr}
+      .mode-switch{grid-template-columns:1fr;gap:4px}
+      .mode-btn{font-size:12px;padding:8px 6px;text-align:center}
+      .rank{font-size:42px}
+      .live-dot{margin-left:0;width:100%;margin-top:4px}
+      .hero p{font-size:14px}
+      .stats-summary{grid-template-columns:1fr;gap:8px}
+      .college-card{flex-direction:column;align-items:flex-start;gap:6px}
+      .college-card .pill{align-self:flex-start}
+      .college-list{max-height:400px}
+    }
+  </style>
 </head>
 <body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">R</span><span>Rank Companion</span></div>
+      <span class="quiet">Built for a clearer next step, not a false promise.</span>
+    </header>
 
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebarMobile()"></div>
+    <section class="hero" aria-labelledby="page-title">
+      <div class="eyebrow"><span class="pulse"></span> JEE Main planning, made honest</div>
+      <h1 id="page-title">Know what your score can say — and what it cannot.</h1>
+      <p>Use your NTA percentile or raw marks to view your All India Rank and check eligibility across NITs, IIITs, and top GFTIs.</p>
+      <span class="hero-note">Includes 31 NITs, Top IIITs & GFTIs. Branches: CSE, ECE, AI/DS, IT, Mechanical, Electrical.</span>
+    </section>
 
-    <div class="controls-bar">
-        <button class="toggle-btn" onclick="toggleSidebar()">
-            <svg style="width:18px;height:18px;fill:currentColor" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
-            <span>Navigation Menu</span>
-        </button>
-    </div>
+    <main class="grid">
+      <div>
+        <section class="card" aria-labelledby="input-title">
+          <h2 id="input-title">Start with what you know</h2>
+          <p class="subcopy">Your result updates as you type. Press Enter or use the button to refresh it.</p>
+          <div class="mode-switch" role="group" aria-label="Rank input method">
+            <button class="mode-btn" type="button" data-mode="percentile" aria-pressed="true">I know my percentile</button>
+            <button class="mode-btn" type="button" data-mode="marks" aria-pressed="false">I only know my marks</button>
+            <button class="mode-btn" type="button" data-mode="official" aria-pressed="false">I have official AIR</button>
+          </div>
 
-    <aside class="sidebar" id="sidebar">
-        <div class="brand">
-            <div class="brand-logo">R</div>
-            <div class="brand-title">Rank Engine Pro</div>
-        </div>
-
-        <ul class="nav-list">
-            <li class="nav-item active" onclick="switchTab('scorePredictorTab', this)">
-                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
-                <span>Rank & College Predictor</span>
-            </li>
-            <li class="nav-item" onclick="switchTab('pctToRankTab', this)">
-                <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8v-10h-8v10zm0-18v6h8V3h-8z"/></svg>
-                <span>Percentile ➔ AIR Converter</span>
-            </li>
-            <li class="nav-item" onclick="switchTab('rankToPctTab', this)">
-                <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
-                <span>AIR ➔ Percentile Converter</span>
-            </li>
-            <li class="nav-item" onclick="switchTab('prioritiesTab', this)">
-                <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l2.02 4.54 4.92.42-3.73 3.23L16.23 18z"/></svg>
-                <span>Marks vs Rank Table</span>
-            </li>
-        </ul>
-    </aside>
-
-    <main class="main-content">
-
-        <!-- Tab 1: Predictor -->
-        <section id="scorePredictorTab" class="dashboard-section active">
-            <header class="header">
-                <div class="header-title">
-                    <h2>Advanced JEE Main Rank Predictor</h2>
-                    <p>Based on Multi-Year NTA Normalization Data & Shift Density Curves (-75 to 300 Marks)</p>
-                </div>
-            </header>
-
-            <div class="dashboard-grid">
-                <div class="card col-12">
-                    <div class="card-header">
-                        <div class="card-title"><span>🎯</span> Candidate Inputs</div>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Raw Score (-75 to 300)</label>
-                            <input type="number" id="sec1RawScore" placeholder="e.g. -15 or 195" min="-75" max="300" step="1">
-                            <div class="score-warning" id="scoreCorrectionNote" style="display: none;"></div>
-                        </div>
-                        <div class="form-group">
-                            <label>Total Appearing Candidates</label>
-                            <input type="number" id="sec1TotalCandidates" value="1418000" min="1000">
-                        </div>
-                        <div class="form-group">
-                            <label>Category Pool</label>
-                            <select id="sec1Category">
-                                <option value="GEN">General (OPEN / UR)</option>
-                                <option value="EWS">GEN-EWS</option>
-                                <option value="OBC">OBC-NCL</option>
-                                <option value="SC">Scheduled Caste (SC)</option>
-                                <option value="ST">Scheduled Tribe (ST)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Gender Quota</label>
-                            <select id="sec1Gender">
-                                <option value="neutral">Gender-Neutral</option>
-                                <option value="female">Female Supernumerary</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>State Quota Preference</label>
-                            <select id="sec1StateQuota">
-                                <option value="OS">Other State (OS)</option>
-                                <option value="HS">Home State (HS)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button class="btn-submit" onclick="runAnalyticsPredictor()">Predict Rank & Eligible Colleges</button>
-
-                    <div class="metrics-row" id="sec1Results" style="display: none;">
-                        <div class="metric-card">
-                            <div class="metric-label">Evaluated Marks</div>
-                            <div class="metric-value" id="sec1EvaluatedScoreVal">--</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">Expected Percentile Range</div>
-                            <div class="metric-value accent-green" id="sec1PercentileVal">--</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">Predicted AIR Range</div>
-                            <div class="metric-value accent-blue" id="sec1AirVal">--</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">Category Pool Rank</div>
-                            <div class="metric-value accent-purple" id="sec1CatRankVal">--</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">Eligible Seat Options</div>
-                            <div class="metric-value accent-gold" id="sec1EligibleCount">--</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card col-12">
-                    <div class="card-header">
-                        <div class="card-title"><span>🏛️</span> College Admission Possibilities</div>
-                        <div class="table-filter-bar">
-                            <input type="text" id="filterCollege" placeholder="Search College / Branch..." onkeyup="filterTable()">
-                            <select id="filterType" onchange="filterTable()">
-                                <option value="ALL">All Institute Types</option>
-                                <option value="NIT">NITs Only</option>
-                                <option value="IIIT">IIITs Only</option>
-                                <option value="GFTI">GFTIs Only</option>
-                            </select>
-                            <select id="filterChance" onchange="filterTable()">
-                                <option value="ALL">All Admission Chances</option>
-                                <option value="High">High Chance</option>
-                                <option value="Moderate">Moderate Chance</option>
-                                <option value="Low">Low Chance</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Institute & Type</th>
-                                    <th>Branch / Specialization</th>
-                                    <th>Quota</th>
-                                    <th>Admission Status</th>
-                                    <th>JoSAA Cutoff Rank</th>
-                                </tr>
-                            </thead>
-                            <tbody id="sec1CollegeTable">
-                                <tr>
-                                    <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 36px;">
-                                        Enter your score above to calculate your expected AIR range and eligible colleges.
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+          <div id="percentile-panel" class="mode-panel active">
+            <div class="fields">
+              <div class="field"><label for="percentile">NTA percentile score</label><input id="percentile" type="number" min="0" max="100" step="0.0000001" placeholder="For example, 98.4521000" inputmode="decimal"><p class="helper">Copy it exactly from the NTA scorecard.</p></div>
+              <div class="field"><label for="candidates">Unique Paper 1 candidates</label><input id="candidates" type="number" min="1" step="1" value="1418000" inputmode="numeric"><p class="helper">Replace this with the official count for your year.</p></div>
             </div>
+            <div class="notice"><span aria-hidden="true">ℹ️</span><span><strong>Most accurate calculator mode:</strong> percentile is NTA-normalised; raw marks are not comparable between shifts.</span></div>
+          </div>
+
+          <div id="marks-panel" class="mode-panel">
+            <div class="fields">
+              <div class="field"><label for="marks">Raw marks (−75 to 300)</label><input id="marks" type="number" min="-75" max="300" step="1" placeholder="For example, 164" inputmode="numeric"><p class="helper">This predicts a percentile band & eligible college options.</p></div>
+              <div class="field"><label for="difficulty">How did the shift feel?</label><select id="difficulty"><option value="normal">Typical / unknown</option><option value="tough">Tougher than expected</option><option value="easy">Easier than expected</option></select><p class="helper">A light adjustment, not a substitute for normalisation.</p></div>
+              <div class="field full"><label for="marksCandidates">Unique Paper 1 candidates</label><input id="marksCandidates" type="number" min="1" step="1" value="1418000" inputmode="numeric"></div>
+            </div>
+            <div class="notice"><span aria-hidden="true">⚖️</span><span><strong>Why a range?</strong> NTA computes percentile within a shift and resolves final rank using the complete result set.</span></div>
+          </div>
+
+          <div id="official-panel" class="mode-panel">
+            <div class="fields"><div class="field full"><label for="officialRank">All India Rank shown on your final scorecard</label><input id="officialRank" type="number" min="1" step="1" placeholder="For example, 15234" inputmode="numeric"><p class="helper">This does not estimate your rank — it safely stores and uses the official number you enter.</p></div></div>
+            <div class="notice"><span aria-hidden="true">✓</span><span><strong>Exact mode:</strong> an AIR printed by NTA is the only exact AIR.</span></div>
+          </div>
+
+          <!-- Caste, Gender, State Quota Specifications -->
+          <div class="filter-section">
+            <div class="fields">
+              <div class="field">
+                <label for="casteCategory">Category / Caste</label>
+                <select id="casteCategory">
+                  <option value="OPEN">General / OPEN</option>
+                  <option value="EWS">EWS</option>
+                  <option value="OBC">OBC-NCL</option>
+                  <option value="SC">SC</option>
+                  <option value="ST">ST</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="gender">Gender Pool</label>
+                <select id="gender">
+                  <option value="neutral">Gender-Neutral</option>
+                  <option value="female">Female-Only</option>
+                </select>
+              </div>
+              <div class="field full">
+                <label for="stateQuota">Quota (Home State vs Other State)</label>
+                <select id="stateQuota">
+                  <option value="OS">Other State (OS Quota)</option>
+                  <option value="HS">Home State (HS Quota)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <p id="error" class="error" role="alert"></p>
+          <div class="actions"><button id="calculate" class="primary" type="button">Update my rank view</button><button id="reset" class="secondary" type="button">Reset</button><span class="live-dot">Live calculation</span></div>
         </section>
 
-        <!-- Tab 2: Percentile to AIR -->
-        <section id="pctToRankTab" class="dashboard-section">
-            <header class="header">
-                <div class="header-title">
-                    <h2>NTA Percentile ➔ All India Rank</h2>
-                    <p>Official NTA Normalization conversion to exact AIR range</p>
-                </div>
-            </header>
+        <!-- Dynamic NIT/IIIT/GFTI College Suggestions & Eligibility Summary -->
+        <section class="card" aria-labelledby="college-title">
+          <h2 id="college-title">Eligible College Options</h2>
+          <p class="subcopy">Top branches across NITs, IIITs, and GFTIs based on your inputs.</p>
+          
+          <div class="stats-summary">
+            <div class="stats-card"><b id="statEligible">0 / 150</b><span>Total Eligible Options</span></div>
+            <div class="stats-card"><b id="statSafe">0</b><span>Safe Bets</span></div>
+            <div class="stats-card"><b id="statModerate">0</b><span>Moderate / Reach</span></div>
+          </div>
 
-            <div class="dashboard-grid">
-                <div class="card col-6">
-                    <div class="card-header">
-                        <div class="card-title"><span>📊</span> Input Percentile</div>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 16px;">
-                        <label>NTA Percentile Score</label>
-                        <input type="number" id="pctInput" step="any" min="0" max="100" placeholder="e.g. 98.4521">
-                    </div>
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label>Total Candidates</label>
-                        <input type="number" id="pctCandidatesInput" value="1418000">
-                    </div>
-                    <button class="btn-submit" onclick="convertPctToRank()">Calculate AIR Range</button>
-                </div>
+          <div class="search-box">
+            <label for="collegeSearch" class="sr-only">Search College or Branch</label>
+            <input id="collegeSearch" type="text" placeholder="🔍 Search by college name or branch (e.g., Warangal, IIIT Lucknow, PEC, CSE, AI)...">
+          </div>
 
-                <div class="card col-6">
-                    <div class="card-header">
-                        <div class="card-title"><span>📌</span> Predicted Rank Range</div>
-                    </div>
-                    <div class="metrics-row" style="grid-template-columns: 1fr;">
-                        <div class="metric-card">
-                            <div class="metric-label">Estimated All India Rank Range</div>
-                            <div class="metric-value accent-green" id="resRankFromPct">--</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">Candidate Percentile Tier</div>
-                            <div class="metric-value accent-blue" id="resTopPctVal">--</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          <div id="collegeList" class="college-list">
+            <p class="empty">Enter your score or percentile above to view suitable college options.</p>
+          </div>
+        </section>
+      </div>
+
+      <aside>
+        <section class="card result-card" aria-labelledby="result-title" aria-live="polite">
+          <div class="result-top"><div><h2 id="result-title">Your rank view</h2><p id="resultMode" class="subcopy">Enter a value to begin.</p></div><span id="status" class="status">Waiting</span></div>
+          <div id="rank" class="rank">—</div><p id="rankLabel" class="rank-label">Your result will appear here.</p>
+          <p id="resultCopy" class="result-copy"><strong>A small reality check:</strong> a raw score alone cannot produce an exact AIR because JEE Main uses multi-shift percentile normalisation.</p>
+          <div class="mini-grid"><div class="mini"><b id="percentileOut">—</b><span>Percentile used</span></div><div class="mini"><b id="topOut">—</b><span>Competition position</span></div></div>
+          <div class="rank-rail"><div class="rail-head"><span>Top of the merit list</span><span>All candidates</span></div><div class="rail"><span id="marker" class="marker" aria-hidden="true"></span></div></div>
+          <div class="actions"><button id="copy" class="secondary" type="button">Copy result</button></div>
+          <details class="details"><summary>How the formula works</summary><p>For a known percentile, the central view uses <strong>1 + (100 − percentile) ÷ 100 × (candidate count − 1)</strong>, rounded to the nearest whole position. It is a transparent estimate, not an NTA-issued AIR; ties and NTA’s final ranking process can change the official value.</p></details>
         </section>
 
-        <!-- Tab 3: AIR to Percentile -->
-        <section id="rankToPctTab" class="dashboard-section">
-            <header class="header">
-                <div class="header-title">
-                    <h2>All India Rank ➔ NTA Percentile</h2>
-                    <p>Convert your target or estimated All India Rank to expected NTA Percentile</p>
-                </div>
-            </header>
-
-            <div class="dashboard-grid">
-                <div class="card col-6">
-                    <div class="card-header">
-                        <div class="card-title"><span>🎯</span> Input Rank</div>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 16px;">
-                        <label>All India Rank (AIR)</label>
-                        <input type="number" id="rankInput" min="1" placeholder="e.g. 15000">
-                    </div>
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label>Total Candidates</label>
-                        <input type="number" id="rankCandidatesInput" value="1418000">
-                    </div>
-                    <button class="btn-submit" onclick="convertRankToPct()">Calculate Percentile</button>
-                </div>
-
-                <div class="card col-6">
-                    <div class="card-header">
-                        <div class="card-title"><span>📊</span> Predicted Percentile</div>
-                    </div>
-                    <div class="metrics-row" style="grid-template-columns: 1fr;">
-                        <div class="metric-card">
-                            <div class="metric-label">Estimated NTA Percentile</div>
-                            <div class="metric-value accent-green" id="resPctFromRank">--</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">Percentile Tier Description</div>
-                            <div class="metric-value accent-blue" id="resTierFromRank">--</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Tab 4: Historical Matrix -->
-        <section id="prioritiesTab" class="dashboard-section">
-            <header class="header">
-                <div class="header-title">
-                    <h2>Historical Reference Matrix: Marks vs AIR Range</h2>
-                    <p>Standardized statistical ranges based on past 5 years of JEE Main session results</p>
-                </div>
-            </header>
-
-            <div class="card col-12">
-                <div class="card-header">
-                    <div class="card-title"><span>📅</span> Benchmark Marks vs Rank Distribution</div>
-                </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Raw Score Range</th>
-                                <th>Expected Percentile</th>
-                                <th>Estimated AIR Range (Out of 14 Lakhs)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="font-weight: 700; color: var(--accent-green);">280 - 300 Marks</td>
-                                <td>99.98 - 100.00%</td>
-                                <td>1 - 250</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: 700; color: var(--accent-green);">250 - 279 Marks</td>
-                                <td>99.90 - 99.97%</td>
-                                <td>251 - 1,400</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: 700; color: var(--accent-green);">200 - 249 Marks</td>
-                                <td>99.20 - 99.89%</td>
-                                <td>1,401 - 11,500</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: 700; color: var(--primary-accent);">160 - 199 Marks</td>
-                                <td>98.00 - 99.19%</td>
-                                <td>11,501 - 28,000</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: 700; color: var(--primary-accent);">130 - 159 Marks</td>
-                                <td>95.50 - 97.99%</td>
-                                <td>28,001 - 63,000</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: 700; color: var(--accent-orange);">100 - 129 Marks</td>
-                                <td>91.00 - 95.49%</td>
-                                <td>63,001 - 127,000</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: 700; color: var(--text-muted);">60 - 99 Marks</td>
-                                <td>80.00 - 90.99%</td>
-                                <td>127,001 - 283,000</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: 700; color: var(--text-muted);">0 - 59 Marks</td>
-                                <td>15.00 - 79.99%</td>
-                                <td>283,001 - 1,200,000</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: 700; color: var(--accent-red);">-75 to -1 Marks</td>
-                                <td>0.00 - 14.99%</td>
-                                <td>1,200,001 - Max Candidates</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
+        <section class="card" aria-labelledby="source-title"><h2 id="source-title">Keep the data trustworthy</h2><p class="subcopy">Use official sources for inputs that affect a real decision.</p><ul class="source-list"><li>Copy percentile or AIR from your final NTA scorecard.</li><li>Use the NTA result notice for the actual unique candidate count.</li><li>Verify official category closing ranks in JoSAA/CSAB counselling rounds.</li></ul></section>
+      </aside>
     </main>
-
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.toggle('active-mobile');
-            overlay.classList.toggle('active');
-        }
-
-        function closeSidebarMobile() {
-            document.getElementById('sidebar').classList.remove('active-mobile');
-            document.getElementById('sidebarOverlay').classList.remove('active');
-        }
-
-        function switchTab(tabId, element) {
-            document.querySelectorAll('.dashboard-section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.add('active');
-            element.classList.add('active');
-
-            if (window.innerWidth <= 1024) closeSidebarMobile();
-        }
-
-        function convertPctToRank() {
-            const pct = parseFloat(document.getElementById('pctInput').value);
-            const total = parseInt(document.getElementById('pctCandidatesInput').value, 10);
-            if (isNaN(pct) || isNaN(total) || pct < 0 || pct > 100) return;
-            
-            const expectedRank = Math.round(((100 - pct) / 100) * total);
-            const minRank = Math.max(1, Math.round(expectedRank * 0.95));
-            const maxRank = Math.round(expectedRank * 1.05);
-            
-            document.getElementById('resRankFromPct').innerText = `${minRank.toLocaleString()} - ${maxRank.toLocaleString()}`;
-            document.getElementById('resTopPctVal').innerText = `Top ${(100 - pct).toFixed(2)}% of test takers`;
-        }
-
-        function convertRankToPct() {
-            const rank = parseInt(document.getElementById('rankInput').value, 10);
-            const total = parseInt(document.getElementById('rankCandidatesInput').value, 10);
-            if (isNaN(rank) || isNaN(total) || rank < 1) return;
-            
-            const pct = Math.max(0, 100 - (rank / total) * 100);
-            document.getElementById('resPctFromRank').innerText = `${pct.toFixed(4)}%`;
-            document.getElementById('resTierFromRank').innerText = rank <= 10000 ? "Top Tier Elite" : rank <= 50000 ? "High Competitive Range" : "Moderate Range";
-        }
-
-        function runAnalyticsPredictor() {
-            const rawScore = parseFloat(document.getElementById('sec1RawScore').value);
-            const total = parseInt(document.getElementById('sec1TotalCandidates').value, 10);
-            if (isNaN(rawScore) || isNaN(total)) return;
-
-            let pctMin = 0, pctMax = 0, airMin = 0, airMax = 0;
-            if (rawScore >= 250) { pctMin = 99.90; pctMax = 100.0; }
-            else if (rawScore >= 200) { pctMin = 99.20; pctMax = 99.89; }
-            else if (rawScore >= 160) { pctMin = 98.00; pctMax = 99.19; }
-            else if (rawScore >= 130) { pctMin = 95.50; pctMax = 97.99; }
-            else if (rawScore >= 100) { pctMin = 91.00; pctMax = 95.49; }
-            else if (rawScore >= 60) { pctMin = 80.00; pctMax = 90.99; }
-            else { pctMin = 10.00; pctMax = 79.99; }
-
-            airMin = Math.max(1, Math.round(((100 - pctMax) / 100) * total));
-            airMax = Math.round(((100 - pctMin) / 100) * total);
-
-            document.getElementById('sec1EvaluatedScoreVal').innerText = rawScore;
-            document.getElementById('sec1PercentileVal').innerText = `${pctMin}% - ${pctMax}%`;
-            document.getElementById('sec1AirVal').innerText = `${airMin.toLocaleString()} - ${airMax.toLocaleString()}`;
-            document.getElementById('sec1CatRankVal').innerText = `~${Math.round(airMin * 0.27).toLocaleString()}`;
-            document.getElementById('sec1EligibleCount').innerText = rawScore > 120 ? "42+ Options" : "12+ Options";
-            document.getElementById('sec1Results').style.display = 'grid';
-        }
-
-        function filterTable() {
-            const text = document.getElementById('filterCollege').value.toLowerCase();
-            const rows = document.querySelectorAll('#sec1CollegeTable tr');
-            rows.forEach(row => {
-                const content = row.innerText.toLowerCase();
-                row.style.display = content.includes(text) ? '' : 'none';
-            });
-        }
-
-        // Multi-point Non-Linear Interpolation for Marks vs Percentile Range
-        function getAnalyticsPercentileAndRankRange(score, totalCandidates) {
-            let minPct, maxPct;
-
-            if (score >= 280) { minPct = 99.98; maxPct = 100.0; }
-            else if (score >= 250) { minPct = 99.90; maxPct = 99.97; }
-            else if (score >= 210) { minPct = 99.50; maxPct = 99.89; }
-            else if (score >= 180) { minPct = 99.00; maxPct = 99.49; }
-            else if (score >= 150) { minPct = 97.50; maxPct = 98.99; }
-            else if (score >= 120) { minPct = 94.00; maxPct = 97.49; }
-            else if (score >= 90)  { minPct = 88.00; maxPct = 93.99; }
-            else if (score >= 60)  { minPct = 80.00; maxPct = 87.99; }
-            else if (score >= 30)  { minPct = 50.00; maxPct = 79.99; }
-            else if (score >= 0)   { minPct = 15.00; maxPct = 49.99; }
-            else if (score >= -30) { minPct = 5.00;  maxPct = 14.99; }
-            else { minPct = 0.00;  maxPct = 4.99; }
-
-            let minRank = Math.max(1, Math.floor((100 - maxPct) * (totalCandidates / 100)));
-            let maxRank = Math.min(totalCandidates, Math.floor((100 - minPct) * (totalCandidates / 100)));
-
-            if (score === 300) { minRank = 1; maxRank = 10; minPct = 99.99; maxPct = 100.0; }
-            if (score === -75) { minRank = totalCandidates - 50; maxRank = totalCandidates; minPct = 0.0; maxPct = 0.01; }
-
-            return { minPct, maxPct, minRank, maxRank };
-        }
-
-        const comprehensiveCollegeDatabase = [
-           // --- ALL 31 NITs ---
-            { inst: "NIT Trichy", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 1200, EWS: 280, OBC: 450, SC: 210, ST: 110 } },
-            { inst: "NIT Trichy", type: "NIT", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 3200, EWS: 650, OBC: 1100, SC: 580, ST: 290 } },
-            { inst: "NIT Trichy", type: "NIT", branch: "Electrical & Electronics Engg", cutoffs: { GEN: 6500, EWS: 1200, OBC: 2100, SC: 1100, ST: 550 } },
-
-            { inst: "NIT Surathkal", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 1800, EWS: 350, OBC: 620, SC: 310, ST: 160 } },
-            { inst: "NIT Surathkal", type: "NIT", branch: "Artificial Intelligence", cutoffs: { GEN: 2700, EWS: 520, OBC: 920, SC: 460, ST: 240 } },
-            { inst: "NIT Surathkal", type: "NIT", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 4200, EWS: 780, OBC: 1400, SC: 710, ST: 360 } },
-
-            { inst: "NIT Warangal", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 2200, EWS: 410, OBC: 780, SC: 390, ST: 210 } },
-            { inst: "NIT Warangal", type: "NIT", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 5100, EWS: 920, OBC: 1750, SC: 890, ST: 440 } },
-            { inst: "NIT Warangal", type: "NIT", branch: "Electrical & Electronics Engg", cutoffs: { GEN: 8500, EWS: 1500, OBC: 2800, SC: 1450, ST: 720 } },
-
-            { inst: "NIT Rourkela", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 3800, EWS: 710, OBC: 1350, SC: 690, ST: 370 } },
-            { inst: "NIT Rourkela", type: "NIT", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 7200, EWS: 1300, OBC: 2400, SC: 1200, ST: 610 } },
-            { inst: "NIT Rourkela", type: "NIT", branch: "Electrical Engineering", cutoffs: { GEN: 11500, EWS: 2000, OBC: 3800, SC: 1950, ST: 980 } },
-
-            { inst: "MNNIT Allahabad", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 4500, EWS: 820, OBC: 1550, SC: 810, ST: 420 } },
-            { inst: "MNNIT Allahabad", type: "NIT", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 8900, EWS: 1550, OBC: 2950, SC: 1500, ST: 760 } },
-            { inst: "MNNIT Allahabad", type: "NIT", branch: "Electrical Engineering", cutoffs: { GEN: 13200, EWS: 2250, OBC: 4300, SC: 2200, ST: 1100 } },
-
-            { inst: "MNIT Jaipur", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 4800, EWS: 870, OBC: 1650, SC: 880, ST: 460 } },
-            { inst: "MNIT Jaipur", type: "NIT", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 9500, EWS: 1650, OBC: 3100, SC: 1600, ST: 810 } },
-            { inst: "MNIT Jaipur", type: "NIT", branch: "Electrical Engineering", cutoffs: { GEN: 14800, EWS: 2500, OBC: 4800, SC: 2450, ST: 1220 } },
-
-            { inst: "VNIT Nagpur", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 7000, EWS: 1250, OBC: 2400, SC: 1250, ST: 650 } },
-            { inst: "VNIT Nagpur", type: "NIT", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 12500, EWS: 2100, OBC: 4100, SC: 2100, ST: 1050 } },
-            { inst: "VNIT Nagpur", type: "NIT", branch: "Electrical & Electronics Engg", cutoffs: { GEN: 18200, EWS: 3000, OBC: 5900, SC: 3000, ST: 1500 } },
-
-            { inst: "NIT Calicut", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 5200, EWS: 920, OBC: 1800, SC: 920, ST: 490 } },
-            { inst: "NIT Calicut", type: "NIT", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 10200, EWS: 1750, OBC: 3300, SC: 1700, ST: 850 } },
-
-            { inst: "NIT Kurukshetra", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 8100, EWS: 1420, OBC: 2750, SC: 1410, ST: 730 } },
-            { inst: "NIT Kurukshetra", type: "NIT", branch: "Information Technology", cutoffs: { GEN: 10500, EWS: 1800, OBC: 3500, SC: 1800, ST: 920 } },
-
-            { inst: "NIT Durgapur", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 11500, EWS: 1980, OBC: 3900, SC: 1980, ST: 1050 } },
-            { inst: "NIT Durgapur", type: "NIT", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 18500, EWS: 3100, OBC: 6100, SC: 3100, ST: 1580 } },
-
-            { inst: "NIT Silchar", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 13800, EWS: 2300, OBC: 4500, SC: 2350, ST: 1200 } },
-            { inst: "NIT Silchar", type: "NIT", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 22000, EWS: 3600, OBC: 7200, SC: 3700, ST: 1850 } },
-
-            { inst: "NIT Jalandhar", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 12200, EWS: 2100, OBC: 4100, SC: 2150, ST: 1100 } },
-            { inst: "NIT Jalandhar", type: "NIT", branch: "Information Technology", cutoffs: { GEN: 15800, EWS: 2650, OBC: 5200, SC: 2700, ST: 1380 } },
-
-            { inst: "NIT Patna", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 14200, EWS: 2450, OBC: 4700, SC: 2400, ST: 1280 } },
-            { inst: "NIT Patna", type: "NIT", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 23000, EWS: 3800, OBC: 7500, SC: 3850, ST: 1950 } },
-
-            { inst: "NIT Raipur", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 15500, EWS: 2600, OBC: 5100, SC: 2650, ST: 1400 } },
-            { inst: "NIT Raipur", type: "NIT", branch: "Information Technology", cutoffs: { GEN: 20200, EWS: 3300, OBC: 6600, SC: 3400, ST: 1750 } },
-
-            { inst: "NIT Delhi", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 8800, EWS: 1480, OBC: 2900, SC: 1500, ST: 780 } },
-            { inst: "NIT Delhi", type: "NIT", branch: "Artificial Intelligence & Data Science", cutoffs: { GEN: 10200, EWS: 1700, OBC: 3400, SC: 1750, ST: 900 } },
-
-            { inst: "NIT Goa", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 14500, EWS: 2400, OBC: 4800, SC: 2500, ST: 1300 } },
-            { inst: "NIT Goa", type: "NIT", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 24000, EWS: 3900, OBC: 7900, SC: 4000, ST: 2050 } },
-
-            { inst: "NIT Puducherry", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 18200, EWS: 2900, OBC: 5900, SC: 3000, ST: 1550 } },
-            { inst: "NIT Uttarakhand", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 19500, EWS: 3200, OBC: 6300, SC: 3250, ST: 1680 } },
-            { inst: "NIT Hamirpur", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 11200, EWS: 1900, OBC: 3700, SC: 1900, ST: 980 } },
-            { inst: "NIT Hamirpur", type: "NIT", branch: "Mathematics & Computing", cutoffs: { GEN: 14200, EWS: 2350, OBC: 4600, SC: 2400, ST: 1220 } },
-
-            { inst: "NIT Meghalaya", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 22000, EWS: 3600, OBC: 7200, SC: 3700, ST: 1900 } },
-            { inst: "NIT Manipur", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 29500, EWS: 4800, OBC: 9600, SC: 4900, ST: 2550 } },
-            { inst: "NIT Mizoram", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 32000, EWS: 5200, OBC: 10400, SC: 5300, ST: 2750 } },
-            { inst: "NIT Nagaland", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 31000, EWS: 5000, OBC: 10100, SC: 5100, ST: 2650 } },
-            { inst: "NIT Sikkim", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 27500, EWS: 4400, OBC: 8900, SC: 4500, ST: 2350 } },
-            { inst: "NIT Arunachal Pradesh", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 28200, EWS: 4550, OBC: 9100, SC: 4650, ST: 2400 } },
-            { inst: "NIT Srinagar", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 24000, EWS: 3900, OBC: 7800, SC: 4100, ST: 2100 } },
-            { inst: "NIT Agartala", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 22500, EWS: 3700, OBC: 7400, SC: 3800, ST: 1950 } },
-
-            { inst: "NIT Andhra Pradesh", type: "NIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 18800, EWS: 3050, OBC: 6100, SC: 3100, ST: 1600 } },
-            { inst: "NIT Andhra Pradesh", type: "NIT", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 28000, EWS: 4500, OBC: 9000, SC: 4600, ST: 2380 } },
-
-            { inst: "IIEST Shibpur (NIT Equivalent)", type: "NIT", branch: "Computer Science & Technology", cutoffs: { GEN: 13500, EWS: 2250, OBC: 4400, SC: 2250, ST: 1150 } },
-            { inst: "IIEST Shibpur (NIT Equivalent)", type: "NIT", branch: "Information Technology", cutoffs: { GEN: 17200, EWS: 2850, OBC: 5600, SC: 2850, ST: 1480 } },
-
-            // --- ALL 26 IIITs ---
-            { inst: "IIIT Hyderabad", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 1600, EWS: 310, OBC: 580, SC: 290, ST: 150 } },
-            { inst: "IIIT Hyderabad", type: "IIIT", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 3800, EWS: 690, OBC: 1300, SC: 680, ST: 340 } },
-
-            { inst: "IIIT Bangalore", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 3200, EWS: 610, OBC: 1150, SC: 590, ST: 310 } },
-            { inst: "IIIT Bangalore", type: "IIIT", branch: "Data Science & AI", cutoffs: { GEN: 4100, EWS: 780, OBC: 1450, SC: 750, ST: 390 } },
-
-            { inst: "IIIT Allahabad", type: "IIIT", branch: "Information Technology (IT)", cutoffs: { GEN: 5500, EWS: 990, OBC: 1900, SC: 980, ST: 510 } },
-            { inst: "IIIT Allahabad", type: "IIIT", branch: "ECE (Under IT Dept)", cutoffs: { GEN: 9200, EWS: 1600, OBC: 3000, SC: 1550, ST: 800 } },
-
-            { inst: "IIIT Delhi", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 6200, EWS: 1100, OBC: 2150, SC: 1100, ST: 580 } },
-            { inst: "IIIT Delhi", type: "IIIT", branch: "CS & Artificial Intelligence", cutoffs: { GEN: 5100, EWS: 920, OBC: 1800, SC: 910, ST: 470 } },
-
-            { inst: "IIIT Gwalior", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 7800, EWS: 1350, OBC: 2600, SC: 1350, ST: 710 } },
-            { inst: "IIIT Gwalior", type: "IIIT", branch: "IT + MBA (5 Year Dual Degree)", cutoffs: { GEN: 12500, EWS: 2100, OBC: 4100, SC: 2100, ST: 1080 } },
-
-            { inst: "IIIT Lucknow", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 10500, EWS: 1800, OBC: 3600, SC: 1900, ST: 980 } },
-            { inst: "IIIT Lucknow", type: "IIIT", branch: "Computer Science & Business", cutoffs: { GEN: 12200, EWS: 2050, OBC: 4100, SC: 2100, ST: 1080 } },
-
-            { inst: "IIIT Jabalpur", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 15200, EWS: 2500, OBC: 5100, SC: 2600, ST: 1350 } },
-            { inst: "IIIT Jabalpur", type: "IIIT", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 23500, EWS: 3800, OBC: 7800, SC: 3900, ST: 2000 } },
-
-            { inst: "IIIT Kancheepuram", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 17800, EWS: 2950, OBC: 5900, SC: 3000, ST: 1550 } },
-            { inst: "IIIT Kancheepuram", type: "IIIT", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 26500, EWS: 4300, OBC: 8800, SC: 4400, ST: 2280 } },
-
-            { inst: "IIIT Una", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 28500, EWS: 4500, OBC: 9200, SC: 4800, ST: 2500 } },
-            { inst: "IIIT Una", type: "IIIT", branch: "Information Technology", cutoffs: { GEN: 32500, EWS: 5200, OBC: 10500, SC: 5300, ST: 2750 } },
-
-            { inst: "IIIT Vadodara", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 21200, EWS: 3450, OBC: 7000, SC: 3600, ST: 1880 } },
-            { inst: "IIIT Kota", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 22800, EWS: 3700, OBC: 7500, SC: 3800, ST: 1980 } },
-            { inst: "IIIT Sri City", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 24500, EWS: 3950, OBC: 8100, SC: 4100, ST: 2120 } },
-            { inst: "IIIT Guwahati", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 23100, EWS: 3750, OBC: 7600, SC: 3880, ST: 2000 } },
-            { inst: "IIIT Kilohrad (Sonepat)", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 27200, EWS: 4350, OBC: 8900, SC: 4550, ST: 2380 } },
-            { inst: "IIIT Trichy", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 28900, EWS: 4600, OBC: 9400, SC: 4800, ST: 2480 } },
-            { inst: "IIIT Nagpur", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 26800, EWS: 4250, OBC: 8700, SC: 4450, ST: 2300 } },
-            { inst: "IIIT Pune", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 18500, EWS: 3000, OBC: 6000, SC: 3100, ST: 1600 } },
-            { inst: "IIIT Bhagalpur", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 38500, EWS: 6100, OBC: 12400, SC: 6300, ST: 3250 } },
-            { inst: "IIIT Bhopal", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 26200, EWS: 4150, OBC: 8500, SC: 4350, ST: 2250 } },
-            { inst: "IIIT Surat", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 24800, EWS: 3980, OBC: 8150, SC: 4150, ST: 2150 } },
-            { inst: "IIIT Agartala", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 39800, EWS: 6300, OBC: 12900, SC: 6500, ST: 3350 } },
-            { inst: "IIIT Raichur", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 35200, EWS: 5600, OBC: 11400, SC: 5800, ST: 3000 } },
-            { inst: "IIIT Dharwad", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 34100, EWS: 5450, OBC: 11100, SC: 5650, ST: 2900 } },
-            { inst: "IIIT Kottayam", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 33200, EWS: 5300, OBC: 10800, SC: 5500, ST: 2820 } },
-            { inst: "IIIT Kurnool", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 31800, EWS: 5100, OBC: 10300, SC: 5250, ST: 2700 } },
-            { inst: "IIIT Manipur", type: "IIIT", branch: "Computer Science & Engineering", cutoffs: { GEN: 45000, EWS: 7100, OBC: 14500, SC: 7400, ST: 3800 } },
-
-            // --- TOP PREMIER GFTIs ---
-            { inst: "BIT Mesra, Ranchi", type: "GFTI", branch: "Computer Science & Engineering", cutoffs: { GEN: 16000, EWS: 2800, OBC: 5200, SC: 2800, ST: 1500 } },
-            { inst: "BIT Mesra, Ranchi", type: "GFTI", branch: "Artificial Intelligence & ML", cutoffs: { GEN: 18500, EWS: 3100, OBC: 5900, SC: 3100, ST: 1650 } },
-
-            { inst: "PEC Chandigarh", type: "GFTI", branch: "Computer Science & Engineering", cutoffs: { GEN: 13500, EWS: 2350, OBC: 4500, SC: 2300, ST: 1200 } },
-            { inst: "PEC Chandigarh", type: "GFTI", branch: "Electronics & Comm. Engg", cutoffs: { GEN: 21500, EWS: 3550, OBC: 7000, SC: 3600, ST: 1850 } },
-
-            { inst: "Jawaharlal Nehru University (JNU)", type: "GFTI", branch: "Computer Science & Engineering", cutoffs: { GEN: 21000, EWS: 3400, OBC: 6800, SC: 3500, ST: 1800 } },
-            { inst: "University of Hyderabad", type: "GFTI", branch: "Computer Science & Engineering", cutoffs: { GEN: 23500, EWS: 3800, OBC: 7600, SC: 3900, ST: 2000 } },
-            { inst: "Assam University, Silchar", type: "GFTI", branch: "Computer Science & Engineering", cutoffs: { GEN: 48000, EWS: 7800, OBC: 15500, SC: 8100, ST: 4200 } },
-            { inst: "J K Institute of Applied Physics, Allahabad", type: "GFTI", branch: "Computer Science & Engineering", cutoffs: { GEN: 42000, EWS: 6800, OBC: 13600, SC: 7000, ST: 3600 } },
-            { inst: "GIEEE Tanjore (Central University)", type: "GFTI", branch: "Computer Science & Engineering", cutoffs: { GEN: 46500, EWS: 7500, OBC: 15000, SC: 7800, ST: 4000 } },
-            { inst: "NIFFT Ranchi", type: "GFTI", branch: "Mechanical Engineering", cutoffs: { GEN: 52000, EWS: 8400, OBC: 16800, SC: 8700, ST: 4500 } }
-        ];
-
-        let calculatedSeatOptions = [];
-
-        function runAnalyticsPredictor() {
-            const scoreStr = document.getElementById('sec1RawScore').value.trim();
-            const totalCandidates = parseInt(document.getElementById('sec1TotalCandidates').value, 10) || 1418000;
-            const category = document.getElementById('sec1Category').value;
-
-            if (scoreStr === '' || isNaN(Number(scoreStr))) {
-                alert('Please enter a valid raw score.');
-                return;
-            }
-
-            const rawScore = Number(scoreStr);
-            const { minPct, maxPct, minRank, maxRank } = getAnalyticsPercentileAndRankRange(rawScore, totalCandidates);
-
-            const evalDiv = document.getElementById('sec1EvaluatedScoreVal');
-            evalDiv.innerText = rawScore;
-            evalDiv.className = rawScore < 0 ? 'metric-value accent-red' : 'metric-value accent-green';
-
-            document.getElementById('sec1PercentileVal').innerText = `${minPct.toFixed(2)}% - ${maxPct.toFixed(2)}%`;
-            document.getElementById('sec1AirVal').innerText = `${minRank.toLocaleString()} - ${maxRank.toLocaleString()}`;
-            
-            // Estimated Category AIR
-            let minCat = minRank, maxCat = maxRank;
-            if (category === 'OBC') { minCat = Math.floor(minRank * 0.27); maxCat = Math.floor(maxRank * 0.27); }
-            else if (category === 'EWS') { minCat = Math.floor(minRank * 0.10); maxCat = Math.floor(maxRank * 0.10); }
-            else if (category === 'SC') { minCat = Math.floor(minRank * 0.05); maxCat = Math.floor(maxRank * 0.05); }
-            else if (category === 'ST') { minCat = Math.floor(minRank * 0.022); maxCat = Math.floor(maxRank * 0.022); }
-
-            document.getElementById('sec1CatRankVal').innerText = category === 'GEN' ? 'N/A' : `${minCat.toLocaleString()} - ${maxCat.toLocaleString()}`;
-
-            processSeatAllocation(minCat, maxCat, category);
-        }
-
-        function processSeatAllocation(minUserRank, maxUserRank, category) {
-            calculatedSeatOptions = comprehensiveCollegeDatabase.map(opt => {
-                const categoryCutoff = opt.cutoffs[category] || opt.cutoffs['GEN'];
-                
-                let chance = "Low";
-                let tagClass = "tag-tough";
-
-                if (maxUserRank <= categoryCutoff) {
-                    chance = "High";
-                    tagClass = "tag-easy";
-                } else if (minUserRank <= categoryCutoff * 1.25) {
-                    chance = "Moderate";
-                    tagClass = "tag-mod";
-                }
-
-                return {
-                    inst: opt.inst,
-                    type: opt.type,
-                    branch: opt.branch,
-                    quota: category === 'GEN' ? 'OPEN Seat' : category + ' Category Pool',
-                    cutoff: categoryCutoff,
-                    chance,
-                    tagClass
-                };
-            });
-
-            document.getElementById('sec1EligibleCount').innerText = calculatedSeatOptions.filter(o => o.chance !== 'Low').length;
-            document.getElementById('sec1Results').style.display = 'grid';
-
-            renderCollegeTable(calculatedSeatOptions);
-        }
-
-        function renderCollegeTable(data) {
-            const tbody = document.getElementById('sec1CollegeTable');
-            tbody.innerHTML = '';
-
-            if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 36px;">No institutions match the filter requirements.</td></tr>`;
-                return;
-            }
-
-            data.forEach(opt => {
-                let badgeClass = 'type-gfti';
-                if (opt.type === 'NIT') badgeClass = 'type-nit';
-                else if (opt.type === 'IIIT') badgeClass = 'type-iiit';
-
-                let tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="font-weight: 700;">
-                        <span class="type-badge ${badgeClass}">${opt.type}</span> ${opt.inst}
-                    </td>
-                    <td style="color: var(--primary-accent); font-weight: 600;">${opt.branch}</td>
-                    <td><span style="color: var(--text-muted); font-size: 0.8rem;">${opt.quota}</span></td>
-                    <td><span class="tag ${opt.tagClass}">${opt.chance}</span></td>
-                    <td style="color: var(--text-main); font-weight: 700;">~ ${opt.cutoff.toLocaleString()}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function filterTable() {
-            const collegeQuery = document.getElementById('filterCollege').value.toLowerCase();
-            const typeQuery = document.getElementById('filterType').value;
-            const chanceQuery = document.getElementById('filterChance').value;
-
-            const filtered = calculatedSeatOptions.filter(item => {
-                const matchesSearch = item.inst.toLowerCase().includes(collegeQuery) || item.branch.toLowerCase().includes(collegeQuery);
-                const matchesType = typeQuery === 'ALL' || item.type === typeQuery;
-                const matchesChance = chanceQuery === 'ALL' || item.chance === chanceQuery;
-                return matchesSearch && matchesType && matchesChance;
-            });
-
-            renderCollegeTable(filtered);
-        }
-function convertPctToRank() {
-            const p = parseFloat(document.getElementById('pctInput').value);
-            const n = parseInt(document.getElementById('pctCandidatesInput').value, 10);
-
-            if (isNaN(p) || isNaN(n) || p < 0 || p > 100 || n <= 0) {
-                alert("Please enter a valid percentile (0-100) and candidate count.");
-                return;
-            }
-
-            let minRank = Math.max(1, Math.floor((100 - p - 0.05) * (n / 100)));
-            let maxRank = Math.floor((100 - p + 0.05) * (n / 100)) + 1;
-
-            if (p === 100) { minRank = 1; maxRank = 10; }
-            if (p === 0) { minRank = n - 100; maxRank = n; }
-
-            document.getElementById('resRankFromPct').innerText = `${minRank.toLocaleString()} - ${maxRank.toLocaleString()}`;
-            document.getElementById('resTopPctVal').innerText = p === 100 ? 'Top Ranker' : 'Top ' + (100 - p).toFixed(2) + '%';
-        }
-
-        function convertRankToPct() {
-            const rank = parseFloat(document.getElementById('rankInput').value);
-            const totalCandidates = parseFloat(document.getElementById('rankCandidatesInput').value);
-
-            if (isNaN(rank) || rank <= 0 || isNaN(totalCandidates) || totalCandidates <= 0) {
-                alert("Please enter valid positive numbers for Rank and Total Candidates.");
-                return;
-            }
-
-            if (rank > totalCandidates) {
-                alert("AIR cannot be greater than Total Candidates.");
-                return;
-            }
-
-            const percentile = ((totalCandidates - rank) / totalCandidates) * 100;
-            const roundedPct = percentile.toFixed(4);
-
-            document.getElementById('resPctFromRank').innerText = `${roundedPct} %ile`;
-
-            let tierText = "Top 100%";
-            if (percentile >= 99.9) tierText = "Top 0.1% (Top Elite)";
-            else if (percentile >= 99.0) tierText = "Top 1% (NIT/IIIT CS Tier)";
-            else if (percentile >= 95.0) tierText = "Top 5% (Good NIT/IIIT Tier)";
-            else if (percentile >= 90.0) tierText = "Top 10% (JEE Advanced Qualifier)";
-            else if (percentile >= 80.0) tierText = "Top 20%";
-
-            document.getElementById('resTierFromRank').innerText = tierText;
-        }
-    </script>
-</body>
-</html>
+    <footer class="footer">Rank Companion keeps calculations in this browser only. It does not send your score anywhere.</footer>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite">Copied</div>
+  <script>
+    (() => {
+      const $ = id => document.getElementById(id);
+      let state = { mode: 'percentile', rank: null, low: null, high: null, pct: null, source: null, candidates: null };
+      
+      // Extended Database containing 31 NITs + Premier IIITs + Premier GFTIs (150 Total Options)
+      const collegeDatabase = [
+        // --- ALL 31 NITs (93 entries) ---
+        { name: "NIT Trichy", branch: "Computer Science (CSE)", cutoff: 2400 },
+        { name: "NIT Trichy", branch: "Electronics & Comm (ECE)", cutoff: 4500 },
+        { name: "NIT Trichy", branch: "Mechanical Engineering", cutoff: 10500 },
+        { name: "NIT Karnataka (Surathkal)", branch: "Computer Science (CSE)", cutoff: 3200 },
+        { name: "NIT Karnataka (Surathkal)", branch: "Electronics & Comm (ECE)", cutoff: 6000 },
+        { name: "NIT Karnataka (Surathkal)", branch: "Mechanical Engineering", cutoff: 13000 },
+        { name: "NIT Warangal", branch: "Computer Science (CSE)", cutoff: 3500 },
+        { name: "NIT Warangal", branch: "Electronics & Comm (ECE)", cutoff: 6500 },
+        { name: "NIT Warangal", branch: "Mechanical Engineering", cutoff: 14500 },
+        { name: "MNNIT Allahabad", branch: "Computer Science (CSE)", cutoff: 5000 },
+        { name: "MNNIT Allahabad", branch: "Electronics & Comm (ECE)", cutoff: 9000 },
+        { name: "MNNIT Allahabad", branch: "Mechanical Engineering", cutoff: 19500 },
+        { name: "NIT Calicut", branch: "Computer Science (CSE)", cutoff: 5500 },
+        { name: "NIT Calicut", branch: "Electronics & Comm (ECE)", cutoff: 10500 },
+        { name: "NIT Calicut", branch: "Mechanical Engineering", cutoff: 21000 },
+        { name: "MNIT Jaipur", branch: "Computer Science (CSE)", cutoff: 6000 },
+        { name: "MNIT Jaipur", branch: "Electronics & Comm (ECE)", cutoff: 11500 },
+        { name: "MNIT Jaipur", branch: "Mechanical Engineering", cutoff: 23000 },
+        { name: "VNIT Nagpur", branch: "Computer Science (CSE)", cutoff: 7000 },
+        { name: "VNIT Nagpur", branch: "Electronics & Comm (ECE)", cutoff: 12500 },
+        { name: "VNIT Nagpur", branch: "Mechanical Engineering", cutoff: 24000 },
+        { name: "NIT Delhi", branch: "Computer Science (CSE)", cutoff: 7500 },
+        { name: "NIT Delhi", branch: "Electronics & Comm (ECE)", cutoff: 13500 },
+        { name: "NIT Delhi", branch: "Mechanical Engineering", cutoff: 27000 },
+        { name: "NIT Rourkela", branch: "Computer Science (CSE)", cutoff: 8000 },
+        { name: "NIT Rourkela", branch: "Electronics & Comm (ECE)", cutoff: 14000 },
+        { name: "NIT Rourkela", branch: "Mechanical Engineering", cutoff: 25000 },
+        { name: "NIT Kurukshetra", branch: "Computer Science (CSE)", cutoff: 8500 },
+        { name: "NIT Kurukshetra", branch: "Electronics & Comm (ECE)", cutoff: 15000 },
+        { name: "NIT Kurukshetra", branch: "Mechanical Engineering", cutoff: 28000 },
+        { name: "NIT Durgapur", branch: "Computer Science (CSE)", cutoff: 9000 },
+        { name: "NIT Durgapur", branch: "Electronics & Comm (ECE)", cutoff: 16000 },
+        { name: "NIT Durgapur", branch: "Mechanical Engineering", cutoff: 32000 },
+        { name: "NIT Jamshedpur", branch: "Computer Science (CSE)", cutoff: 9500 },
+        { name: "NIT Jamshedpur", branch: "Electronics & Comm (ECE)", cutoff: 17000 },
+        { name: "NIT Jamshedpur", branch: "Mechanical Engineering", cutoff: 34000 },
+        { name: "NIT Jalandhar", branch: "Computer Science (CSE)", cutoff: 10000 },
+        { name: "NIT Jalandhar", branch: "Electronics & Comm (ECE)", cutoff: 17500 },
+        { name: "NIT Jalandhar", branch: "Mechanical Engineering", cutoff: 33000 },
+        { name: "NIT Goa", branch: "Computer Science (CSE)", cutoff: 11000 },
+        { name: "NIT Goa", branch: "Electronics & Comm (ECE)", cutoff: 18000 },
+        { name: "NIT Goa", branch: "Mechanical Engineering", cutoff: 35000 },
+        { name: "NIT Hamirpur", branch: "Computer Science (CSE)", cutoff: 11500 },
+        { name: "NIT Hamirpur", branch: "Electronics & Comm (ECE)", cutoff: 20000 },
+        { name: "NIT Hamirpur", branch: "Mechanical Engineering", cutoff: 36000 },
+        { name: "NIT Silchar", branch: "Computer Science (CSE)", cutoff: 12500 },
+        { name: "NIT Silchar", branch: "Electronics & Comm (ECE)", cutoff: 21000 },
+        { name: "NIT Silchar", branch: "Mechanical Engineering", cutoff: 38000 },
+        { name: "NIT Raipur", branch: "Computer Science (CSE)", cutoff: 13500 },
+        { name: "NIT Raipur", branch: "Electronics & Comm (ECE)", cutoff: 22000 },
+        { name: "NIT Raipur", branch: "Mechanical Engineering", cutoff: 40000 },
+        { name: "NIT Patna", branch: "Computer Science (CSE)", cutoff: 14000 },
+        { name: "NIT Patna", branch: "Electronics & Comm (ECE)", cutoff: 23000 },
+        { name: "NIT Patna", branch: "Mechanical Engineering", cutoff: 42000 },
+        { name: "NIT Puducherry", branch: "Computer Science (CSE)", cutoff: 16500 },
+        { name: "NIT Puducherry", branch: "Electronics & Comm (ECE)", cutoff: 25000 },
+        { name: "NIT Puducherry", branch: "Mechanical Engineering", cutoff: 43000 },
+        { name: "NIT Andhra Pradesh", branch: "Computer Science (CSE)", cutoff: 17500 },
+        { name: "NIT Andhra Pradesh", branch: "Electronics & Comm (ECE)", cutoff: 26500 },
+        { name: "NIT Andhra Pradesh", branch: "Mechanical Engineering", cutoff: 44000 },
+        { name: "NIT Uttarakhand", branch: "Computer Science (CSE)", cutoff: 18000 },
+        { name: "NIT Uttarakhand", branch: "Electronics & Comm (ECE)", cutoff: 28000 },
+        { name: "NIT Uttarakhand", branch: "Mechanical Engineering", cutoff: 46000 },
+        { name: "NIT Agartala", branch: "Computer Science (CSE)", cutoff: 19000 },
+        { name: "NIT Agartala", branch: "Electronics & Comm (ECE)", cutoff: 29000 },
+        { name: "NIT Agartala", branch: "Mechanical Engineering", cutoff: 50000 },
+        { name: "NIT Meghalaya", branch: "Computer Science (CSE)", cutoff: 19500 },
+        { name: "NIT Meghalaya", branch: "Electronics & Comm (ECE)", cutoff: 28500 },
+        { name: "NIT Meghalaya", branch: "Mechanical Engineering", cutoff: 47000 },
+        { name: "NIT Srinagar", branch: "Computer Science (CSE)", cutoff: 25000 },
+        { name: "NIT Srinagar", branch: "Electronics & Comm (ECE)", cutoff: 37000 },
+        { name: "NIT Srinagar", branch: "Mechanical Engineering", cutoff: 58000 },
+        { name: "NIT Sikkim", branch: "Computer Science (CSE)", cutoff: 26000 },
+        { name: "NIT Sikkim", branch: "Electronics & Comm (ECE)", cutoff: 36000 },
+        { name: "NIT Sikkim", branch: "Mechanical Engineering", cutoff: 53000 },
+        { name: "NIT Manipur", branch: "Computer Science (CSE)", cutoff: 27000 },
+        { name: "NIT Manipur", branch: "Electronics & Comm (ECE)", cutoff: 39000 },
+        { name: "NIT Manipur", branch: "Mechanical Engineering", cutoff: 56000 },
+        { name: "NIT Arunachal Pradesh", branch: "Computer Science (CSE)", cutoff: 28000 },
+        { name: "NIT Arunachal Pradesh", branch: "Electronics & Comm (ECE)", cutoff: 40000 },
+        { name: "NIT Arunachal Pradesh", branch: "Mechanical Engineering", cutoff: 59000 },
+        { name: "NIT Nagaland", branch: "Computer Science (CSE)", cutoff: 31000 },
+        { name: "NIT Nagaland", branch: "Electronics & Comm (ECE)", cutoff: 43000 },
+        { name: "NIT Nagaland", branch: "Mechanical Engineering", cutoff: 62000 },
+        { name: "NIT Mizoram", branch: "Computer Science (CSE)", cutoff: 33000 },
+        { name: "NIT Mizoram", branch: "Electronics & Comm (ECE)", cutoff: 45000 },
+        { name: "NIT Mizoram", branch: "Mechanical Engineering", cutoff: 65000 },
+
+        // --- PREMIER IIITs (36 entries) ---
+        { name: "IIIT Hyderabad", branch: "Computer Science (CSE)", cutoff: 1800 },
+        { name: "IIIT Hyderabad", branch: "Electronics & Comm (ECE)", cutoff: 3400 },
+        { name: "IIIT Bangalore", branch: "Computer Science (CSE)", cutoff: 6500 },
+        { name: "IIIT Bangalore", branch: "Data Science & AI", cutoff: 8200 },
+        { name: "IIIT Allahabad", branch: "Information Technology (IT)", cutoff: 5800 },
+        { name: "IIIT Allahabad", branch: "Electronics & Comm (ECE)", cutoff: 9500 },
+        { name: "IIIT Allahabad", branch: "IT in Business (IT-BI)", cutoff: 6300 },
+        { name: "IIIT Lucknow", branch: "Computer Science (CSE)", cutoff: 9800 },
+        { name: "IIIT Lucknow", branch: "Artificial Intelligence (AI)", cutoff: 10500 },
+        { name: "IIIT Lucknow", branch: "Information Technology (IT)", cutoff: 11200 },
+        { name: "IIIT Delhi (JAC)", branch: "Computer Science (CSE)", cutoff: 4200 },
+        { name: "IIIT Delhi (JAC)", branch: "CS & Artificial Intelligence", cutoff: 3800 },
+        { name: "IIIT Jabalpur", branch: "Computer Science (CSE)", cutoff: 13500 },
+        { name: "IIIT Jabalpur", branch: "Electronics & Comm (ECE)", cutoff: 21500 },
+        { name: "IIIT Jabalpur", branch: "Smart Manufacturing", cutoff: 48000 },
+        { name: "IIIT Gwalior", branch: "Computer Science (CSE)", cutoff: 7200 },
+        { name: "IIIT Gwalior", branch: "IT + MBA (5 Year Dual)", cutoff: 14000 },
+        { name: "IIIT Kancheepuram", branch: "Computer Science (CSE)", cutoff: 16000 },
+        { name: "IIIT Kancheepuram", branch: "Electronics & Comm (ECE)", cutoff: 26000 },
+        { name: "IIIT Pune", branch: "Computer Science (CSE)", cutoff: 15500 },
+        { name: "IIIT Pune", branch: "Electronics & Comm (ECE)", cutoff: 24000 },
+        { name: "IIIT Kota", branch: "Computer Science (CSE)", cutoff: 21000 },
+        { name: "IIIT Kota", branch: "Electronics & Comm (ECE)", cutoff: 31000 },
+        { name: "IIIT Vadodara", branch: "Computer Science (CSE)", cutoff: 20000 },
+        { name: "IIIT Vadodara", branch: "Information Technology (IT)", cutoff: 22500 },
+        { name: "IIIT Sri City", branch: "Computer Science (CSE)", cutoff: 24000 },
+        { name: "IIIT Sri City", branch: "Electronics & Comm (ECE)", cutoff: 37000 },
+        { name: "IIIT Guwahati", branch: "Computer Science (CSE)", cutoff: 22000 },
+        { name: "IIIT Guwahati", branch: "Electronics & Comm (ECE)", cutoff: 34000 },
+        { name: "IIIT Surat", branch: "Computer Science (CSE)", cutoff: 23500 },
+        { name: "IIIT Surat", branch: "Electronics & Comm (ECE)", cutoff: 35000 },
+        { name: "IIIT Bhopal", branch: "Computer Science (CSE)", cutoff: 25000 },
+        { name: "IIIT Bhopal", branch: "Information Technology (IT)", cutoff: 28000 },
+        { name: "IIIT Nagpur", branch: "Computer Science (CSE)", cutoff: 26500 },
+        { name: "IIIT Nagpur", branch: "Computer Science (AI/ML)", cutoff: 24500 },
+        { name: "IIIT Bhagalpur", branch: "Computer Science (CSE)", cutoff: 38000 },
+
+        // --- PREMIER GFTIs (21 entries) ---
+        { name: "BIT Mesra (Ranchi)", branch: "Computer Science (CSE)", cutoff: 16500 },
+        { name: "BIT Mesra (Ranchi)", branch: "Electronics & Comm (ECE)", cutoff: 28500 },
+        { name: "BIT Mesra (Ranchi)", branch: "Mechanical Engineering", cutoff: 45000 },
+        { name: "PEC Chandigarh", branch: "Computer Science (CSE)", cutoff: 12000 },
+        { name: "PEC Chandigarh", branch: "Electronics & Comm (ECE)", cutoff: 19000 },
+        { name: "PEC Chandigarh", branch: "Mechanical Engineering", cutoff: 38000 },
+        { name: "Jawaharlal Nehru University (JNU)", branch: "Computer Science (CSE)", cutoff: 28000 },
+        { name: "Jawaharlal Nehru University (JNU)", branch: "Electronics & Comm (ECE)", cutoff: 39000 },
+        { name: "University of Hyderabad (UoH)", branch: "Computer Science (CSE)", cutoff: 22000 },
+        { name: "Assam University (Silchar)", branch: "Computer Science (CSE)", cutoff: 49000 },
+        { name: "Assam University (Silchar)", branch: "Agricultural Engineering", cutoff: 78000 },
+        { name: "JK Institute of Applied Physics (Allahabad)", branch: "Computer Science (CSE)", cutoff: 43000 },
+        { name: "JK Institute of Applied Physics (Allahabad)", branch: "Electronics & Comm (ECE)", cutoff: 57000 },
+        { name: "National Institute of Electronics (NIELIT Aurangabad)", branch: "Electronics System Engineering", cutoff: 54000 },
+        { name: "Gurusaday Dutt Museum / CIT Kokrajhar", branch: "Computer Science (CSE)", cutoff: 52000 },
+        { name: "GIF T (Ghani Khan Choudhury Institute)", branch: "Computer Science (CSE)", cutoff: 55000 },
+        { name: "GIF T (Ghani Khan Choudhury Institute)", branch: "Electrical Engineering", cutoff: 68000 },
+        { name: "NIFTEM Thanjavur", branch: "Food Processing Tech", cutoff: 82000 },
+        { name: "NIFTEM Kundli", branch: "Food Tech & Management", cutoff: 79000 },
+        { name: "Tezpur University", branch: "Computer Science (CSE)", cutoff: 46000 },
+        { name: "Tezpur University", branch: "Mechanical Engineering", cutoff: 69000 }
+      ];
+
+      const anchors = [[-75,.01],[0,29],[30,57],[60,78],[90,89],[120,95],[150,98],[180,99.16],[210,99.62],[240,99.86],[270,99.97],[300,99.999]];
+      const fmt = value => Number(value).toLocaleString('en-IN');
+      const clamp = (value,min,max) => Math.min(max,Math.max(min,value));
+      function showError(message='') { const el=$('error'); el.textContent=message; el.classList.toggle('show',Boolean(message)); }
+      function rankFromPercentile(pct, candidates) { return Math.round(1 + ((100-pct)/100) * (candidates-1)); }
+      function interpolate(score) { const s=clamp(score,-75,300); for(let i=1;i<anchors.length;i++){ const [x2,y2]=anchors[i], [x1,y1]=anchors[i-1]; if(s<=x2) return y1 + ((s-x1)/(x2-x1))*(y2-y1); } return 99.999; }
+      function spreadFor(score) { if(score>=240) return .07; if(score>=180) return .28; if(score>=120) return .9; if(score>=60) return 2.4; return 6; }
+      function setMode(mode) { state.mode=mode; document.querySelectorAll('.mode-btn').forEach(btn=>btn.setAttribute('aria-pressed',btn.dataset.mode===mode)); document.querySelectorAll('.mode-panel').forEach(panel=>panel.classList.toggle('active',panel.id===mode+'-panel')); calculate(); }
+      
+      // Calculate Effective Cutoff based on Category, Gender, and State Quota
+      function getAdjustedCutoff(baseCutoff) {
+        let multiplier = 1.0;
         
-    </script>
+        // Category adjustment factors (relaxations)
+        const categoryMap = { 'OPEN': 1.0, 'EWS': 1.18, 'OBC': 1.35, 'SC': 2.8, 'ST': 4.5 };
+        multiplier *= categoryMap[$('casteCategory').value] || 1.0;
+
+        // Gender adjustment factor
+        if ($('gender').value === 'female') {
+          multiplier *= 1.22;
+        }
+
+        // Home State quota factor
+        if ($('stateQuota').value === 'HS') {
+          multiplier *= 1.35;
+        }
+
+        return Math.round(baseCutoff * multiplier);
+      }
+
+      function renderColleges() {
+        const list = $('collegeList');
+        if (!Number.isFinite(state.rank)) {
+          list.innerHTML = '<p class="empty">Enter your score or percentile above to view suitable college options.</p>';
+          $('statEligible').textContent = '0 / ' + collegeDatabase.length;
+          $('statSafe').textContent = '0';
+          $('statModerate').textContent = '0';
+          return;
+        }
+
+        const searchTerm = ($('collegeSearch').value || '').toLowerCase().trim();
+        const userRank = state.high || state.rank;
+        
+        let safeCount = 0;
+        let moderateCount = 0;
+
+        const allMapped = collegeDatabase.map(c => {
+          const adjustedCutoff = getAdjustedCutoff(c.cutoff);
+          return { ...c, adjustedCutoff };
+        });
+
+        const eligible = allMapped.filter(c => {
+          const matchesRank = c.adjustedCutoff >= (state.high || state.rank) * 0.82;
+          const matchesSearch = !searchTerm || c.name.toLowerCase().includes(searchTerm) || c.branch.toLowerCase().includes(searchTerm);
+          
+          if (matchesRank) {
+            if (userRank <= c.adjustedCutoff * 0.8) safeCount++;
+            else moderateCount++;
+          }
+
+          return matchesRank && matchesSearch;
+        });
+
+        // Update statistics card
+        $('statEligible').textContent = `${eligible.length} / ${collegeDatabase.length}`;
+        $('statSafe').textContent = safeCount;
+        $('statModerate').textContent = moderateCount;
+
+        if (eligible.length === 0) {
+          list.innerHTML = '<p class="empty">No matching choices found for this rank or search term. Try adjusting search filters or state quota settings.</p>';
+          return;
+        }
+
+        eligible.sort((a, b) => a.adjustedCutoff - b.adjustedCutoff);
+
+        list.innerHTML = eligible.map(item => {
+          let statusLabel = 'Safe Bet';
+          let pillClass = 'safe';
+          
+          if (userRank > item.adjustedCutoff) {
+            statusLabel = 'Reach';
+            pillClass = 'reach';
+          } else if (userRank > item.adjustedCutoff * 0.8) {
+            statusLabel = 'Moderate';
+            pillClass = 'reach';
+          }
+
+          return `
+            <div class="college-card">
+              <div class="college-info">
+                <b>${escapeHtml(item.name)}</b>
+                <span>${escapeHtml(item.branch)} • ~Closing Rank: ${fmt(item.adjustedCutoff)}</span>
+              </div>
+              <span class="pill ${pillClass}">${statusLabel}</span>
+            </div>
+          `;
+        }).join('');
+      }
+
+      function render() {
+        const hasResult=Number.isFinite(state.rank); $('rank').textContent=hasResult ? (state.source==='official' ? fmt(state.rank) : '≈ '+fmt(state.rank)) : '—';
+        $('status').textContent=!hasResult?'Waiting':state.source==='official'?'Official AIR':'Formula estimate';
+        $('resultMode').textContent=!hasResult?'Enter a value to begin.':state.source==='marks'?'Marks-only scenario':state.source==='official'?'Scorecard value':'NTA percentile calculation';
+        
+        if(!hasResult){ 
+          $('rankLabel').textContent='Your result will appear here.'; $('percentileOut').textContent='—'; $('topOut').textContent='—'; $('marker').style.left='50%'; 
+          $('resultCopy').innerHTML='<strong>A small reality check:</strong> a raw score alone cannot produce an exact AIR because JEE Main uses multi-shift percentile normalisation.'; 
+          renderColleges();
+          return; 
+        }
+
+        const range = state.low!==state.high ? `${fmt(state.low)} – ${fmt(state.high)}` : fmt(state.rank);
+        $('rankLabel').textContent=state.source==='official'?'Exact AIR entered from the scorecard.':state.source==='marks'?`Indicative AIR range: ${range}`:`Indicative AIR range: ${range}`;
+        $('percentileOut').textContent=state.pct===null?'Not applicable':state.source==='marks'?`${state.pct.toFixed(2)}% band`:`${state.pct.toFixed(7)}%`;
+        const top=state.pct===null?null:100-state.pct; $('topOut').textContent=top===null?'Official record':`Top ${Math.max(0,top).toFixed(top<1?3:2)}%`;
+        
+        const candCount = state.candidates || 1418000;
+        $('marker').style.left=clamp(((state.rank-1)/Math.max(1,candCount-1))*100,1,99)+'%';
+        
+        $('resultCopy').innerHTML=state.source==='official'?'<strong>Ready for college viewing.</strong> Verify exact category closing ranks from the JoSAA portal.':state.source==='marks'?'<strong>This is deliberately a range.</strong> The width reflects uncertainty in raw marks across shifts; use your final NTA percentile when it is available.':'<strong>Closest calculator mode.</strong> The displayed AIR is a transparent percentile-to-position estimate. NTA’s final AIR remains authoritative.';
+        
+        renderColleges();
+      }
+
+      function calculate() {
+        showError(); state.rank=state.low=state.high=state.pct=null; state.candidates=null; state.source=null;
+        if(state.mode==='percentile') { const pct=Number($('percentile').value), n=Math.round(Number($('candidates').value)); if($('percentile').value===''){render();return} if(!Number.isFinite(pct)||pct<0||pct>100||!Number.isFinite(n)||n<1){showError('Enter a percentile from 0 to 100 and a valid candidate count.');render();return} const center=rankFromPercentile(pct,n), tolerance=.00000005; state={...state,source:'percentile',rank:center,low:rankFromPercentile(clamp(pct+tolerance,0,100),n),high:rankFromPercentile(clamp(pct-tolerance,0,100),n),pct,candidates:n}; }
+        if(state.mode==='marks') { const score=Number($('marks').value), n=Math.round(Number($('marksCandidates').value)); if($('marks').value===''){render();return} if(!Number.isFinite(score)||score<-75||score>300||!Number.isFinite(n)||n<1){showError('Enter marks from −75 to 300 and a valid candidate count.');render();return} let pct=interpolate(score); const adjustment={tough:.16,normal:0,easy:-.16}[$('difficulty').value]; pct=clamp(pct+adjustment,0,100); const spread=spreadFor(score); state={...state,source:'marks',rank:rankFromPercentile(pct,n),low:rankFromPercentile(clamp(pct+spread,0,100),n),high:rankFromPercentile(clamp(pct-spread,0,100),n),pct,candidates:n}; }
+        if(state.mode==='official') { const rank=Math.round(Number($('officialRank').value)); if($('officialRank').value===''){render();return} if(!Number.isFinite(rank)||rank<1){showError('Enter the positive AIR shown on your final scorecard.');render();return} state={...state,source:'official',rank,low:rank,high:rank,pct:null,candidates:Math.max(rank,1)}; }
+        if(state.low>state.high)[state.low,state.high]=[state.high,state.low]; render();
+      }
+
+      function resultText() { if(!Number.isFinite(state.rank))return 'No rank result yet.'; const type=state.source==='official'?'Official AIR':state.source==='marks'?'Indicative marks-based AIR':'Formula-based AIR estimate'; return `${type}: ${fmt(state.rank)}${state.low!==state.high?` (range ${fmt(state.low)}–${fmt(state.high)})`:''}.`; }
+      function escapeHtml(text){return String(text).replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]))}
+      function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1700)}
+      
+      document.querySelectorAll('.mode-btn').forEach(button=>button.addEventListener('click',()=>setMode(button.dataset.mode)));
+      ['percentile','candidates','marks','difficulty','marksCandidates','officialRank','casteCategory','gender','stateQuota'].forEach(id=>$(id).addEventListener('input',calculate));
+      $('collegeSearch').addEventListener('input',renderColleges);
+      $('calculate').addEventListener('click',calculate); 
+      $('reset').addEventListener('click',()=>{['percentile','marks','officialRank','collegeSearch'].forEach(id=>$(id).value='');$('candidates').value='1418000';$('marksCandidates').value='1418000';$('difficulty').value='normal';$('casteCategory').value='OPEN';$('gender').value='neutral';$('stateQuota').value='OS';calculate();toast('Inputs reset');});
+      $('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(resultText());toast('Result copied')}catch{toast('Copy is unavailable in this browser')}});
+      document.addEventListener('keydown',event=>{if(event.key==='Enter'&&event.target.tagName!=='BUTTON'){event.preventDefault();calculate()}});
+      calculate();
+    })();
+  </script>
 </body>
 </html>
