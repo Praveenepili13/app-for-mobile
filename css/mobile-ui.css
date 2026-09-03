@@ -1,0 +1,129 @@
+/* Mobile-first UI improvements for rank-predictor
+   - Safe, non-invasive UI-only overrides
+   - Put this file after your existing CSS links so it can override where needed
+*/
+
+/* 1) Layout basics */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.4;
+  color: #111;
+  background-color: #fff;
+}
+
+/* 2) Fluid container to avoid horizontal scroll on small screens */
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 16px;
+}
+
+/* If your HTML currently uses a different wrapper, these generic rules still help */
+main, header, footer, nav, section, article {
+  display: block;
+}
+
+/* 3) Responsive media */
+img, picture, video, iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 4) Inputs and buttons — larger tap targets and better spacing on mobile */
+button, .btn, input[type="button"], input[type="submit"] {
+  -webkit-tap-highlight-color: transparent;
+  padding: 10px 14px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  line-height: 1;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: #f6f7fb;
+}
+
+/* Make text inputs easier to tap */
+input, textarea, select {
+  font-size: 16px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.08);
+  width: 100%;
+  background: #fff;
+  margin: 6px 0 12px 0;
+}
+
+/* 5) Flexible columns and common helpers (non-destructive) */
+.row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.col {
+  flex: 1 1 0;
+  min-width: 0; /* prevent overflow from long words */
+}
+
+/* Optional sidebar pattern—will only affect elements using these classes */
+.sidebar { width: 280px; flex: 0 0 280px; }
+.main { flex: 1 1 0; }
+
+/* 6) Header / nav polish */
+.header, header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  background: transparent;
+}
+.nav {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* 7) Mobile breakpoints */
+@media (max-width: 900px) {
+  .sidebar { display: none !important; } /* hide non-essential sidebar on smaller screens */
+  .row { gap: 12px; }
+  .header { padding: 10px 0; }
+}
+
+@media (max-width: 600px) {
+  .container { padding: 12px; }
+  .nav { display: none; }            /* collapse nav into menu toggle (JS) */
+  .mobile-nav-toggle { display: inline-flex; align-items:center; gap:8px; }
+  button, .btn { width: 100%; }      /* full-width primary buttons on mobile */
+  .col { flex-basis: 100%; }         /* stack columns */
+  h1, h2, h3 { font-weight: 600; margin: 0.6em 0 0.2em; }
+  /* Reduce large fixed paddings/margins that cause overflow */
+  .no-overflow, .row, header, .header { overflow-wrap: anywhere; }
+}
+
+/* Accessibility: focus outlines preserved */
+a:focus, button:focus, input:focus, textarea:focus {
+  outline: 3px solid rgba(21,156,228,0.25);
+  outline-offset: 2px;
+}
+
+/* 8) Small utilities */
+.text-center { text-align: center; }
+.hidden-mobile { display: none; }
+@media (min-width: 601px) {
+  .hidden-mobile { display: initial; }
+}
+
+/* End of mobile-ui.css */
