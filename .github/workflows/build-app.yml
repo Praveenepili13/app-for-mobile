@@ -26,6 +26,7 @@ jobs:
       - name: Install dependencies & prepare assets
         run: |
           npm install --legacy-peer-deps
+          npm install @capacitor/android @capacitor/core @capacitor/cli
           npm run prepare-web
           npx cap add android || true
           npx cap sync android
